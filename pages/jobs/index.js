@@ -2,9 +2,13 @@ import Head from "next/head";
 import React from "react";
 import Link from "next/link";
 import ProjectFilter from "@/components/ProjectFilter";
-import ProjectComponent from '@/components/projectComponent'
+import ProjectComponent from "@/components/projectComponent";
+import getCssData from "@/helpers/readCssFile";
 
-function Jobs() {
+//NODE
+const path = require("path");
+
+function Jobs({ fileContent }) {
     return (
         <>
             <Head>
@@ -15,8 +19,8 @@ function Jobs() {
                     content='width=device-width, initial-scale=1.0'
                 />
                 <title>jobs</title>
-                <link rel='stylesheet' type='text/css' href='/css/job.css' />
-                <script src='/JS/job.js' defer></script>
+                {/* <link rel='stylesheet' type='text/css' href='/css/job.css' /> */}
+                {/* <script src='/JS/job.js' defer></script> */}
                 <link
                     rel='stylesheet'
                     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
@@ -32,6 +36,9 @@ function Jobs() {
                     href='https://fonts.gstatic.com'
                     crossOrigin='true'
                 />
+                <style
+                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                ></style>
             </Head>
             <header className='head'>
                 <nav className='head-nav'>
@@ -72,9 +79,7 @@ function Jobs() {
                                 <Link href='/about_us'>About</Link>
                             </li>
                             <li>
-                                <Link href='/contact'>
-                                    Contact Us
-                                </Link>
+                                <Link href='/contact'>Contact Us</Link>
                             </li>
                         </ul>
                     </div>
@@ -84,7 +89,7 @@ function Jobs() {
                 <div className='nav-list'>
                     <ul>
                         <li>
-                            <Link href='/'>Wasetak-Free&emsp;{'>'}</Link>
+                            <Link href='/'>Wasetak-Free&emsp;{">"}</Link>
                         </li>
                         <li>
                             <Link href='/jobs'>Jobs&emsp;</Link>
@@ -123,3 +128,10 @@ function Jobs() {
 }
 
 export default Jobs;
+
+export async function getServerSideProps(context) {
+    // Load the CSS file
+    const cssFilePath = path.join(process.cwd(), "styles", "css", "job.css");
+    const fileContent = await getCssData(cssFilePath);
+    return { props: { fileContent } };
+}

@@ -2,8 +2,12 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
+import getCssData from "@/helpers/readCssFile";
 
-function Profile() {
+//NODE
+const path = require("path");
+
+function Profile({ fileContent }) {
     return (
         <>
             <Head>
@@ -21,7 +25,10 @@ function Profile() {
                     crossorigin='anonymous'
                 />
 
-                <link rel='stylesheet' href='/css/profile.css' />
+                {/* <link rel='stylesheet' href='/css/profile.css' /> */}
+                <style
+                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                ></style>
             </Head>
             <div>
                 <header>
@@ -48,12 +55,8 @@ function Profile() {
                                 />
                                 <button className='profile-btu'>Profile</button>
                                 <div className='dropdown-options'>
-                                    <Link href='/profile'>
-                                        Dashboard
-                                    </Link>
-                                    <Link href='/profile/edit'>
-                                        Setting
-                                    </Link>
+                                    <Link href='/profile'>Dashboard</Link>
+                                    <Link href='/profile/edit'>Setting</Link>
                                     <Link href='/'>Logout</Link>
                                 </div>
                             </div>
@@ -68,19 +71,13 @@ function Profile() {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href='/jobs'>
-                                        projects
-                                    </Link>
+                                    <Link href='/jobs'>projects</Link>
                                 </li>
                                 <li>
-                                    <Link href='/about_us'>
-                                        About
-                                    </Link>
+                                    <Link href='/about_us'>About</Link>
                                 </li>
                                 <li>
-                                    <Link href='/contact'>
-                                        Contact Us
-                                    </Link>
+                                    <Link href='/contact'>Contact Us</Link>
                                 </li>
                             </ul>
                         </div>
@@ -89,13 +86,15 @@ function Profile() {
                 <div className='nav-list'>
                     <ul>
                         <li>
-                            <Link href='/'>Wasetak-Free&emsp;{'>'}</Link>
+                            <Link href='/'>Wasetak-Free&emsp;{">"}</Link>
                         </li>
                         <li>
-                            <Link href='/user-profile/'>user profile&emsp;{'>'}</Link>
+                            <Link href='/user-profile/'>
+                                user profile&emsp;{">"}
+                            </Link>
                         </li>
                         <li>
-                            <Link href='/user-profile/pofile-edit.html'>
+                            <Link href='/profile/edit'>
                                 Edit profile
                             </Link>
                         </li>
@@ -457,3 +456,10 @@ function Profile() {
 }
 
 export default Profile;
+
+export async function getServerSideProps(context) {
+    // Load the CSS file
+    const cssFilePath = path.join(process.cwd(), "styles", "css", "profile.css");
+    const fileContent = await getCssData(cssFilePath);
+    return { props: { fileContent } };
+}

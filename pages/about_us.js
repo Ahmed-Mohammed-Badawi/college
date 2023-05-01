@@ -2,8 +2,12 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
+import getCssData from "@/helpers/readCssFile";
 
-export default function AboutUs() {
+//NODE
+const path = require("path");
+
+export default function AboutUs({fileContent}) {
     return (
         <>
             <Head>
@@ -16,7 +20,7 @@ export default function AboutUs() {
                     rel='stylesheet'
                     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
                 />
-                <link rel='stylesheet' type='text/css' href="/css/aboutus.css" />
+                {/* <link rel='stylesheet' type='text/css' href="/css/aboutus.css" /> */}
 
                 <link
                     href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
@@ -34,6 +38,9 @@ export default function AboutUs() {
                     href='https://fonts.gstatic.com'
                     crossorigin
                 />
+                <style
+                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                ></style>
             </Head>
             <div className='pageContainer'>
                 <header className='head'>
@@ -59,9 +66,7 @@ export default function AboutUs() {
                                     <Link href='/login'>Log In</Link>
                                 </li>
                                 <li>
-                                    <Link href='/registration'>
-                                        Sign Up
-                                    </Link>
+                                    <Link href='/registration'>Sign Up</Link>
                                 </li>
                             </ul>
                         </div>
@@ -206,4 +211,16 @@ export default function AboutUs() {
             </div>
         </>
     );
+}
+
+export async function getServerSideProps(context) {
+    // Load the CSS file
+    const cssFilePath = path.join(
+        process.cwd(),
+        "styles",
+        "css",
+        "aboutus.css"
+    );
+    const fileContent = await getCssData(cssFilePath);
+    return { props: { fileContent } };
 }

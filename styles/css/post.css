@@ -35,6 +35,7 @@ nav {
     top: 0;
     width: 100%;
     align-items: center;
+    z-index: 999;
 }
 
 .nav-bar1 ul {
@@ -265,7 +266,7 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: .5rem;
+    gap: 0.5rem;
     list-style-type: none;
     margin: 0;
     padding: 0;

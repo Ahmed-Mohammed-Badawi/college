@@ -1,11 +1,14 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import PopupChatWindow from "@/components/PopupChatWindow";
+import getCssData from "@/helpers/readCssFile";
 
-function Profile() {
+//NODE
+const path = require("path");
 
+function Profile({ fileContent }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleChat = () => {
@@ -29,7 +32,10 @@ function Profile() {
                     crossorigin='anonymous'
                 />
 
-                <link rel='stylesheet' href='/css/profile.css' />
+                {/* <link rel='stylesheet' href='/css/profile.css' /> */}
+                <style
+                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                ></style>
             </Head>
             <div>
                 <header>
@@ -87,9 +93,7 @@ function Profile() {
                 <div className='nav-list'>
                     <ul>
                         <li>
-                            <Link href='/'>
-                                Wasetak-Free&emsp;{">"}
-                            </Link>
+                            <Link href='/'>Wasetak-Free&emsp;{">"}</Link>
                         </li>
                         <li>
                             <Link href='/user-profile/profile.html'>
@@ -130,7 +134,10 @@ function Profile() {
                                                 >
                                                     Follow
                                                 </button>
-                                                <button onClick={toggleChat} className='btn btn-outline-primary'>
+                                                <button
+                                                    onClick={toggleChat}
+                                                    className='btn btn-outline-primary'
+                                                >
                                                     Message
                                                 </button>
                                             </div>
@@ -347,7 +354,7 @@ function Profile() {
                                                 <Link
                                                     className='btn btn-info '
                                                     target='__blank'
-                                                    href='/user-profile/pofile-edit.html'
+                                                    href='/profile/edit'
                                                 >
                                                     Edit
                                                 </Link>
@@ -533,3 +540,10 @@ function Profile() {
 }
 
 export default Profile;
+
+export async function getServerSideProps(context) {
+    // Load the CSS file
+    const cssFilePath = path.join(process.cwd(), "styles", "css", "profile.css");
+    const fileContent = await getCssData(cssFilePath);
+    return { props: { fileContent } };
+}

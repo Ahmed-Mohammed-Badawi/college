@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Script from "next/script";
+import getCssData from "@/helpers/readCssFile";
 
-export default function ContactForm() {
+//NODE
+const path = require("path");
+
+export default function ContactForm({fileContent}) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [companyName, setCompanyName] = useState("");
@@ -15,7 +19,6 @@ export default function ContactForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (name && email && companyName && message) {
-            console.log("Form submitted");
             setName("");
             setEmail("");
             setCompanyName("");
@@ -30,7 +33,6 @@ export default function ContactForm() {
             if (!email) {
                 setEmailError("Email is required");
             }
-            console.log("Form not submitted");
         }
     };
 
@@ -65,7 +67,7 @@ export default function ContactForm() {
                     href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
                     rel='stylesheet'
                 />
-                <link rel='stylesheet' type='text/css' href='/css/Contact.css' />
+                {/* <link rel='stylesheet' type='text/css' href='/css/Contact.css' /> */}
                 <link
                     rel='stylesheet'
                     href='https://unpkg.com/boxicons@latest/css/boxicons.min.css'
@@ -77,6 +79,9 @@ export default function ContactForm() {
                     crossOrigin='true'
                 />
                 {/* <script src='JS/Contact.js' defer></script> */}
+                <style
+                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                ></style>
             </Head>
             <header className={"head"}>
                 <Script
@@ -101,9 +106,7 @@ export default function ContactForm() {
                                 <Link href='/login'>Log In</Link>
                             </li>
                             <li>
-                                <Link href='/registration'>
-                                    Sign Up
-                                </Link>
+                                <Link href='/registration'>Sign Up</Link>
                             </li>
                         </ul>
                     </div>
@@ -123,9 +126,7 @@ export default function ContactForm() {
                                 <Link href='/about_us'>About</Link>
                             </li>
                             <li>
-                                <Link href='/contact'>
-                                    Contact Us
-                                </Link>
+                                <Link href='/contact'>Contact Us</Link>
                             </li>
                         </ul>
                     </div>
@@ -208,7 +209,8 @@ export default function ContactForm() {
                                         }
                                     />
                                     Yes, I would like to receive communications
-                                    by call / email about Company&#39;s services.
+                                    by call / email about Company&#39;s
+                                    services.
                                 </p>
                                 <p className='full-width'>
                                     <input
@@ -262,4 +264,16 @@ export default function ContactForm() {
             </main>
         </div>
     );
+}
+
+export async function getServerSideProps(context) {
+    // Load the CSS file
+    const cssFilePath = path.join(
+        process.cwd(),
+        "styles",
+        "css",
+        "Contact.css"
+    );
+    const fileContent = await getCssData(cssFilePath);
+    return { props: { fileContent } };
 }

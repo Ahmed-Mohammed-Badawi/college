@@ -1,12 +1,14 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import Script from "next/script";
-import Technologies from "@/components/Technologies.jsx";
-
+// import Technologies from "@/components/Technologies.jsx";
 import ProjectForm from "@/components/projectForm";
+import getCssData from "@/helpers/readCssFile";
 
-export default function HireForm() {
+//NODE
+const path = require("path");
+
+export default function HireForm({ fileContent }) {
     const [technologies, setTechnologies] = useState([]);
 
     function submitForm() {
@@ -25,7 +27,7 @@ export default function HireForm() {
                     rel='stylesheet'
                     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
                 />
-                <link rel='stylesheet' type='text/css' href='/css/hire.css' />
+                {/* <link rel='stylesheet' type='text/css' href='/css/hire.css' /> */}
                 <link
                     href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
                     rel='stylesheet'
@@ -43,6 +45,9 @@ export default function HireForm() {
 
                 <meta charset='UTF-8' />
                 <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+                <style
+                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                ></style>
             </Head>
             <div className='fullpage'>
                 <div className='logo'>
@@ -65,4 +70,11 @@ export default function HireForm() {
             </div>
         </>
     );
+}
+
+export async function getServerSideProps(context) {
+    // Load the CSS file
+    const cssFilePath = path.join(process.cwd(), "styles", "css", "hire.css");
+    const fileContent = await getCssData(cssFilePath);
+    return { props: { fileContent } };
 }

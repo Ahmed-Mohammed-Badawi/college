@@ -1,7 +1,11 @@
-// Import the useRouter hook from Next.js
-import { useRouter } from 'next/router';
-import '../styles/globals.css'
+import "../styles/globals.css";
+import NextNProgress from "nextjs-progressbar";
 
 export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+    return (
+        <>
+            <NextNProgress color="#007fed" />
+            <Component {...pageProps} />;
+        </>
+    );
 }

@@ -3,8 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import Proposal from "@/components/proposal";
 import ProposalForm from "@/components/proposalForm";
+import getCssData from "@/helpers/readCssFile";
 
-export default function Home() {
+//NODE
+const path = require("path");
+
+export default function Home({ fileContent }) {
     return (
         <>
             <Head>
@@ -18,7 +22,7 @@ export default function Home() {
                     rel='stylesheet'
                     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
                 />
-                <link rel='stylesheet' type='text/css' href='/css/post.css' />
+                {/* <link rel='stylesheet' type='text/css' href='/css/post.css' /> */}
                 <link
                     href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
                     rel='stylesheet'
@@ -40,6 +44,9 @@ export default function Home() {
                     href='/favicon-32x32.png'
                 />
                 <title>Frontend Mentor | Interactive comments section</title>
+                <style
+                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                ></style>
             </Head>
 
             <header>
@@ -81,9 +88,7 @@ export default function Home() {
                                 <Link href='/about_us'>About</Link>
                             </li>
                             <li>
-                                <Link href='/contact'>
-                                    Contact Us
-                                </Link>
+                                <Link href='/contact'>Contact Us</Link>
                             </li>
                         </ul>
                     </div>
@@ -101,13 +106,13 @@ export default function Home() {
             <div className='nav-list'>
                 <ul>
                     <li>
-                        <Link href='/main'>Wasetak-Free&emsp;{'>'}</Link>
+                        <Link href='/main'>Wasetak-Free&emsp;{">"}</Link>
                     </li>
                     <li>
-                        <Link href='/jobs'>Jobs&emsp;{'>'}</Link>
+                        <Link href='/jobs'>Jobs&emsp;{">"}</Link>
                     </li>
                     <li>
-                        <Link href='#'>Post &emsp;{'>'}</Link>
+                        <Link href='#'>Post &emsp;{">"}</Link>
                     </li>
                     <li>
                         <Link href='#'>New Company logo</Link>
@@ -306,4 +311,11 @@ export default function Home() {
             </div>
         </>
     );
+}
+
+export async function getServerSideProps(context) {
+    // Load the CSS file
+    const cssFilePath = path.join(process.cwd(), "styles", "css", "post.css");
+    const fileContent = await getCssData(cssFilePath);
+    return { props: { fileContent } };
 }

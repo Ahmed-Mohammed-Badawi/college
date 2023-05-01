@@ -1,10 +1,14 @@
 import { useState } from "react";
-import styles from "../public/css/Registration.module.css";
+import styles from "../styles/css/Registration.module.css";
 import Script from "next/script";
 import Head from "next/head";
 import Link from "next/link";
+import getCssData from "@/helpers/readCssFile";
 
-export default function RegistrationPage() {
+//NODE
+const path = require("path");
+
+export default function RegistrationPage({ fileContent }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -36,11 +40,11 @@ export default function RegistrationPage() {
                     rel='stylesheet'
                     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
                 />
-                <link
+                {/* <link
                     rel='stylesheet'
                     type='text/css'
                     href='/css/registration.css'
-                />
+                /> */}
                 <link
                     href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
                     rel='stylesheet'
@@ -55,6 +59,9 @@ export default function RegistrationPage() {
                     href='https://fonts.gstatic.com'
                     crossOrigin='true'
                 />
+                <style
+                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                ></style>
             </Head>
             <div className={styles.container}>
                 <Script
@@ -128,4 +135,12 @@ export default function RegistrationPage() {
             </div>
         </>
     );
+}
+
+
+export async function getServerSideProps(context) {
+    // Load the CSS file
+    const cssFilePath = path.join(process.cwd(), "styles", "css", "registration.css");
+    const fileContent = await getCssData(cssFilePath);
+    return { props: { fileContent } };
 }
