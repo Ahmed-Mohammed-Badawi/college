@@ -1,0 +1,128 @@
+.popupChatContainer {
+    position: relative;
+}
+
+.chatButton {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    bottom: 10px;
+    left: 30px;
+    padding: 10px;
+    background-color: rgb(14,23,36);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.chatButton:hover {
+    background-color: rgb(38, 60, 92);
+}
+
+.chatWindow {
+    position: fixed;
+    bottom: 90px;
+    left: 35px;
+    width: 300px;
+    height: 400px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.chatTitle {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 20px 30px;
+    background-color: rgb(14, 23, 36);
+    font-size: 17px;
+    color: white;
+}
+
+.chatMessages {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 280px;
+    overflow-y: scroll;
+    padding: 10px;
+}
+
+.chatMessages::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.chatMessages::-webkit-scrollbar-track {
+    background: #1c1c1e;
+}
+
+.chatMessages::-webkit-scrollbar-thumb {
+    background: rgb(134, 60, 125);
+}
+
+.chatMessages::-webkit-scrollbar-thumb:hover {
+    background: rgb(134, 60, 125);
+}
+
+.MessageText{
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: rgb(14, 23, 36);
+    color: white;
+    width: min-content;
+    margin-bottom: 3px;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.MessageText:first-child{
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 10px;
+}
+
+.MessageText:last-child{
+    border-radius: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 10px;
+}
+
+.chatForm {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.chatInput {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+}
+
+.chatSubmit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+    background-color: rgb(14, 23, 36);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.chatSubmit:hover {
+    background-color: rgb(38, 60, 92);
+}
+
+.chatSubmit:active {
+    transform: scale(0.95);
+}

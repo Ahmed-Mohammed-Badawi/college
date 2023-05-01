@@ -1,0 +1,10 @@
+.container {
+    width: 100%;
+    height: 50vh;
+  }
+  
+  /* Override default styles for react-select */
+  .css-1okebmr-indicatorSeparator {
+    display: none;
+  }
+  

@@ -1,0 +1,164 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 5rem;
+}
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.Inputs_container{
+    display: flex;
+    justify-content: flex-start;
+}
+
+
+.form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: sans-serif;
+    color: #444444;
+}
+.form input[type="text"],
+.form input[type="number"],
+.form textarea {
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    color: #444444;
+    font-family: sans-serif;
+    /* width: 100%; */
+    background-color: #f3f3f37c;
+    font-family: sans-serif;
+    border: 1px solid #e2e2e2;
+    outline: none;
+}
+.form input[type="text"]:focus,
+.form input[type="number"]:focus,
+.form textarea:focus {
+    border: 1px solid #16528d;
+    caret-color: #16528d;
+}
+
+.form textarea{
+    height: 150px;
+    resize: none;
+}
+
+
+.radioButton {
+    margin-top: 5px;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.radioButton input[type="radio"] {
+    position: relative;
+    margin-right: 10px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+    cursor: pointer;
+}
+.radioButton input[type="radio"]::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 14px;
+    height: 14px;
+    /* transform: translate(-50%, -50%); */
+    border-radius: 50%;
+    background-color: #1e90ff;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+.radioButton input[type="radio"]:checked {
+    border-color: #1e90ff;
+}
+.radioButton input[type="radio"]:checked::after {
+    visibility: visible;
+    opacity: 1;
+}
+
+.radioButton label {
+    font-size: 14px;
+    cursor: pointer;
+    color: #666666;
+    margin-bottom: 0;
+}
+.form input[type="file"] {
+    display: none;
+}
+.fileUploader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #1e90ff;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.fileUploaderLabel{
+    padding: 10px 20px;
+    background-color: #EDEDED;
+    color: #999999;
+    border-radius: 5px;
+    text-transform: uppercase;
+    border: 1px solid #e2e2e2;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.fileUploaderLabel:active{
+    transform: scale(0.98);
+}
+
+.fileUploader:hover {
+    background-color: #4169e1;
+}
+.fileUploaderText {
+    margin-right: 10px;
+}
+
+.form button{
+    padding: 10px 30px;
+    background-color: #1e90ff;
+    font-family: sans-serif;
+    margin-left: auto;
+    border: 0;
+    text-transform: uppercase;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    border-radius: 5px;
+}
+
+.form button:active{
+    transform: scale(0.98);
+}
