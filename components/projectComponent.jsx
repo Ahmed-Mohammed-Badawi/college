@@ -11,11 +11,8 @@ export default function ProjectComponent() {
                     </Link>
                 </h3>
                 <p className={styles.text}>
-                    give me a nextjs component styled with css module which
-                    contains: 1. parent container which has 2 parts left and
-                    right the left width is 80% and contains h3 and p 2. the
-                    right part has a price part and days part note: make it very
-                    nice styled
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et totam perspiciatis, veritatis voluptatem quis debitis ut reiciendis amet distinctio. Molestiae, harum? Tempore perspiciatis laborum libero eos molestias aut unde.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et totam perspiciatis, veritatis voluptatem quis debitis ut reiciendis amet distinctio. Molestiae, harum? Tempore perspiciatis laborum libero eos molestias aut unde.
                 </p>
             </div>
             <div className={styles.right}>
