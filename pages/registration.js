@@ -4,27 +4,92 @@ import Script from "next/script";
 import Head from "next/head";
 import Link from "next/link";
 import getCssData from "@/helpers/readCssFile";
+import axios from "axios";
+import { toast } from "react-toastify";
+import Spinner from "@/components/spinner/Spinner";
+import { useRouter } from "next/router";
 
 //NODE
 const path = require("path");
 
 export default function RegistrationPage({ fileContent }) {
+    // ROUTER
+    const router = useRouter();
+
+    // STATES
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [phone, setPhone] = useState("");
-    const [dob, setDob] = useState("");
+    const [userName, setUserName] = useState("");
+    const [loading, setLoading] = useState(false);
 
+    // HANDLER
     const handleSubmit = (event) => {
         event.preventDefault();
         // perform validation here
+        if (!name || !email || !password || !userName) {
+            toast.error("Please fill all the fields!");
+            return;
+        }
 
-        // reset form fields
-        setName("");
-        setEmail("");
-        setPassword("");
-        setPhone("");
-        setDob("");
+        if (password.length < 6) {
+            toast.error("Password must be at least 6 characters!");
+            return;
+        }
+
+        if (userName.length < 3) {
+            toast.error("Username must be at least 3 characters!");
+            return;
+        }
+
+        if (/^[a-zA-Z0-9- ]*$/.test(userName) == false) {
+            toast.error("Username must be alphanumeric!");
+            return;
+        }
+
+        // EMAIL VALIDATION with regex
+        const emailregex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+        if (emailregex.test(email) == false) {
+            toast.error("Email is not valid!");
+            return;
+        }
+
+        // SEND THE CREATE USER REQUEST TO THE API
+        setLoading(true);
+        axios
+            .post("/api/user/create", {
+                name,
+                email,
+                password,
+                userName,
+            })
+            .then((response) => {
+                setLoading(false);
+                console.log(response);
+                // save the email and password in local storage
+                localStorage.setItem("emailForSignIn", email);
+                localStorage.setItem("passwordForSignIn", password);
+                // reset form fields
+                setName("");
+                setEmail("");
+                setPassword("");
+                setUserName("");
+                // Redirect to verify email page and show toast
+                router.push("/verifyEmail").then(() => {
+                    toast.success(
+                        "User created successfully! please verify your email"
+                    );
+                });
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.log(error);
+                toast.error(
+                    error.response?.data?.error ||
+                        error.message ||
+                        "Error creating user!"
+                );
+            });
     };
 
     return (
@@ -40,11 +105,6 @@ export default function RegistrationPage({ fileContent }) {
                     rel='stylesheet'
                     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
                 />
-                {/* <link
-                    rel='stylesheet'
-                    type='text/css'
-                    href='/css/registration.css'
-                /> */}
                 <link
                     href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
                     rel='stylesheet'
@@ -102,24 +162,20 @@ export default function RegistrationPage({ fileContent }) {
                             />
                         </div>
                         <div>
-                            <i className='fa-solid fa-phone'></i>
+                            <i class='fa-solid fa-circle-user'></i>
                             <input
                                 type='tel'
-                                placeholder='Enter Your Phone'
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <i className='fa-solid fa-calendar'></i>
-                            <input
-                                type='date'
-                                value={dob}
-                                onChange={(e) => setDob(e.target.value)}
+                                placeholder='Enter Your Username'
+                                value={userName}
+                                onChange={(e) => setUserName(e.target.value)}
                             />
                         </div>
                         <button type='submit' className={styles.tutu}>
-                            Create account
+                            {loading ? (
+                                <Spinner size={0.5} color={"#ff5500"} />
+                            ) : (
+                                "Register"
+                            )}
                         </button>
                     </form>
                     <span>
@@ -137,10 +193,14 @@ export default function RegistrationPage({ fileContent }) {
     );
 }
 
-
 export async function getServerSideProps(context) {
     // Load the CSS file
-    const cssFilePath = path.join(process.cwd(), "styles", "css", "registration.css");
+    const cssFilePath = path.join(
+        process.cwd(),
+        "styles",
+        "css",
+        "registration.css"
+    );
     const fileContent = await getCssData(cssFilePath);
     return { props: { fileContent } };
 }

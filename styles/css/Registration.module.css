@@ -1,15 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
-.container *{
+.container * {
     box-sizing: border-box;
-    font-family: 'Raleway', sans-serif;
+    font-family: "Raleway", sans-serif;
     line-height: 1;
     padding: 0;
     margin: 0;
 }
 
 .container {
-    background-color:rgb(14,23,36);
+    background-color: rgb(14, 23, 36);
     height: 100vh;
     display: flex;
     align-items: center;
@@ -39,7 +39,7 @@
     margin-bottom: 35px;
 }
 
-.box form div {
+.box form > div {
     display: flex;
     align-items: center;
     background-color: var(--light-color);
@@ -85,7 +85,7 @@
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
-    background-color: rgb(14,23,36);
+    background-color: rgb(14, 23, 36);
     color: white;
     border: none;
     width: 100%;
@@ -93,11 +93,11 @@
     border-radius: 250px;
 }
 
-.tutu{
+.tutu {
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
-    background-color:rgb(14,23,36);
+    background-color: rgb(14, 23, 36);
     color: white;
     border: none;
     width: 100%;
@@ -106,14 +106,43 @@
     border-radius: 250px;
     align-items: center;
     display: flex;
-    justify-content:center;
+    justify-content: center;
 }
-.tutu:hover{
+.tutu:hover {
     background-color: var(--tertiary-color);
     cursor: pointer;
-    color:white;
-   
+    color: white;
 }
+
+.tutu:active {
+    transform: scale(0.95);
+}
+
+.tutu_resend{
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: rgb(255, 255, 255);
+    color: rgb(27, 27, 27);
+    border: 1px solid rgb(27, 27, 27);
+    width: 100%;
+    padding: 15px;
+    margin-top: 45px;
+    border-radius: 250px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.tutu_resend:hover {
+    background-color: var(--tertiary-color);
+    cursor: pointer;
+    color: white;
+}
+
+.tutu_resend:active {
+    transform: scale(0.95);
+}
+
 
 .box form input[type="submit"]:hover {
     background-color: var(--tertiary-color);
@@ -136,9 +165,8 @@
 
 .box span a:hover {
     color: var(--tertiary-color);
-    
 }
- .box .Home a {
+.box .Home a {
     text-decoration: none;
     color: black;
     font-weight: bold;

@@ -2,11 +2,70 @@ import Head from "next/head";
 import Link from "next/link";
 import Script from "next/script";
 import getCssData from "@/helpers/readCssFile";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import Spinner from "@/components/spinner/Spinner";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 //NODE
 const path = require("path");
 
 export default function Login({ fileContent }) {
+    // ROUTER
+    const router = useRouter();
+
+    // STATES
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    // HANDLER
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // perform validation here
+        if (!email || !password) {
+            toast.error("Please fill all the fields!");
+            return;
+        }
+
+        // EMAIL VALIDATION with regex
+        const emailregex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+        if (emailregex.test(email) == false) {
+            toast.error("Email is not valid!");
+            return;
+        }
+
+        // SEND THE CREATE USER REQUEST TO THE API
+        setLoading(true);
+        axios
+            .post("/api/user/login", {
+                email,
+                password,
+            })
+            .then((response) => {
+                setLoading(false);
+                console.log(response);
+                // Save the token in local storage and cookie
+                localStorage.setItem("token", response.data.token);
+                document.cookie = `token=${response.data.token}; path=/`;
+
+                // Redirect to home page and show toast
+                router.push("/").then(() => {
+                    toast.success("Logged in successfully!");
+                });
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.log(error);
+                toast.error(
+                    error.response?.data?.error ||
+                        error.message ||
+                        "Error logging in!"
+                );
+            });
+    };
+
     return (
         <>
             <Head>
@@ -48,10 +107,16 @@ export default function Login({ fileContent }) {
                 <div className='box'>
                     <h1>Login</h1>
                     <form>
-                        <label>Username</label>
+                        <label>Email</label>
                         <div>
                             <i className='fa-solid fa-user'></i>
-                            <input type='text' placeholder='Enter Username' />
+                            <input
+                                type='email'
+                                placeholder='Enter Email'
+                                onChange={(event) => {
+                                    setEmail(event.target.value);
+                                }}
+                            />
                         </div>
                         <label>Password</label>
                         <div>
@@ -59,13 +124,24 @@ export default function Login({ fileContent }) {
                             <input
                                 type='password'
                                 placeholder='Enter Password'
+                                onChange={(event) => {
+                                    setPassword(event.target.value);
+                                }}
                             />
                         </div>
                         <a href='#' className='forgot'>
                             Forgot Password?
                         </a>
-                        <Link href='/login' className='tut'>
-                            Login
+                        <Link
+                            href='/login'
+                            className='tut'
+                            onClick={handleSubmit}
+                        >
+                            {loading ? (
+                                <Spinner size={0.5} color={"#ff5500"} />
+                            ) : (
+                                "Login"
+                            )}
                         </Link>
                         <Link href='/registration' className='sign-up'>
                             Sign Up
