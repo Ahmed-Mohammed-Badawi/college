@@ -9,12 +9,6 @@ import getCssData from "@/helpers/readCssFile";
 const path = require("path");
 
 export default function HireForm({ fileContent }) {
-    const [technologies, setTechnologies] = useState([]);
-
-    function submitForm() {
-        // handle form submission here
-    }
-
     return (
         <>
             <Head>

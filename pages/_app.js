@@ -9,13 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function App({ Component, pageProps }) {
 
-    // useEffect(() => {
-    //     axios.get('/api/user/create')
-    //     .then(res => {console.log(res)})
-    //     .catch(err => {console.log(err)})
-    // }, [])
-    // // console.log(db)
-
     return (
         <>
             <NextNProgress color="#007fed" />

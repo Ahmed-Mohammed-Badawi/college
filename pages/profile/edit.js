@@ -1,13 +1,60 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import getCssData from "@/helpers/readCssFile";
+import axios from "axios";
+import Spinner from "@/components/spinner/Spinner";
 
 //NODE
 const path = require("path");
 
 function Profile({ fileContent }) {
+    // STATES
+    const [loading, setLoading] = React.useState(false); // loading state
+    const [fullName, setFullName] = React.useState("");
+    const [userName, setUserName] = React.useState("");
+    const [bio, setBio] = React.useState("");
+    const [country, setCountry] = React.useState("");
+
+    useEffect(() => {
+        axios
+            .get("/api/user/get")
+            .then((res) => {
+                console.log(res.data);
+
+                setFullName(res.data.name);
+                setUserName(res.data.username);
+                setBio(res.data.bio);
+                setCountry(res.data.country);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
+
+    // SUBMIT HANDLER
+    const submitHandler = (e) => {
+        e.preventDefault();
+
+        setLoading(true);
+        axios
+            .put("/api/user/update", {
+                name: fullName,
+                username: userName,
+                bio,
+                country,
+            })
+            .then((res) => {
+                setLoading(false);
+                console.log(res.data);
+            })
+            .catch((err) => {
+                setLoading(false);
+                console.log(err);
+            });
+    };
+
     return (
         <>
             <Head>
@@ -89,18 +136,17 @@ function Profile({ fileContent }) {
                             <Link href='/'>Wasetak-Free&emsp;{">"}</Link>
                         </li>
                         <li>
-                            <Link href='/user-profile/'>
-                                user profile&emsp;{">"}
-                            </Link>
+                            <Link href='/profile'>user profile&emsp;{">"}</Link>
                         </li>
                         <li>
-                            <Link href='/profile/edit'>
-                                Edit profile
-                            </Link>
+                            <Link href='/profile/edit'>Edit profile</Link>
                         </li>
                     </ul>
                 </div>
-                <div class='container'>
+                <div
+                    class='container'
+                    style={{ minHeight: `calc(100vh - 187px)` }}
+                >
                     <div class='main-body'>
                         <div class='row'>
                             <div class='col-lg-4'>
@@ -124,17 +170,6 @@ function Profile({ fileContent }) {
                                                 <p class='text-muted font-size-sm'>
                                                     Cairo, Egypt, Eg
                                                 </p>
-                                                <button
-                                                    style={{
-                                                        marginRight: "10px",
-                                                    }}
-                                                    class='btn btn-primary'
-                                                >
-                                                    Follow
-                                                </button>
-                                                <button class='btn btn-outline-primary'>
-                                                    Message
-                                                </button>
                                             </div>
                                         </div>
                                         <hr class='my-4' />
@@ -289,7 +324,12 @@ function Profile({ fileContent }) {
                                                 <input
                                                     type='text'
                                                     class='form-control'
-                                                    value='User_name'
+                                                    value={fullName}
+                                                    onChange={(e) => {
+                                                        setFullName(
+                                                            e.target.value
+                                                        );
+                                                    }}
                                                 />
                                             </div>
                                         </div>
@@ -301,7 +341,12 @@ function Profile({ fileContent }) {
                                                 <input
                                                     type='text'
                                                     class='form-control'
-                                                    value='User_Email@Wasetak-Free.com'
+                                                    value={userName}
+                                                    onChange={(e) => {
+                                                        setUserName(
+                                                            e.target.value
+                                                        );
+                                                    }}
                                                 />
                                             </div>
                                         </div>
@@ -313,11 +358,14 @@ function Profile({ fileContent }) {
                                                 <input
                                                     type='text'
                                                     class='form-control'
-                                                    value='02-25223689'
+                                                    value={bio}
+                                                    onChange={(e) => {
+                                                        setBio(e.target.value);
+                                                    }}
                                                 />
                                             </div>
                                         </div>
-                                        <div class='row mb-3'>
+                                        {/* <div class='row mb-3'>
                                             <div class='col-sm-3'>
                                                 <h6 class='mb-0'>Link</h6>
                                             </div>
@@ -328,7 +376,7 @@ function Profile({ fileContent }) {
                                                     value='(012) 131415166'
                                                 />
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div class='row mb-3'>
                                             <div class='col-sm-3'>
                                                 <h6 class='mb-0'>Country</h6>
@@ -337,11 +385,16 @@ function Profile({ fileContent }) {
                                                 <input
                                                     type='text'
                                                     class='form-control'
-                                                    value='Heliopolis, Cairo, EG'
+                                                    value={country}
+                                                    onChange={(e) => {
+                                                        setCountry(
+                                                            e.target.value
+                                                        );
+                                                    }}
                                                 />
                                             </div>
                                         </div>
-                                        <div class='row mb-3'>
+                                        {/* <div class='row mb-3'>
                                             <div class='col-sm-3'>
                                                 <h6 class='mb-0'>Message</h6>
                                             </div>
@@ -352,96 +405,24 @@ function Profile({ fileContent }) {
                                                     value='Heliopolis, Cairo, EG'
                                                 />
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div class='row'>
                                             <div class='col-sm-3'></div>
                                             <div class='col-sm-9 text-secondary'>
-                                                <input
+                                                <button
                                                     type='button'
                                                     class='btn btn-primary px-4'
-                                                    value='Save Changes'
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class='row'>
-                                    <div class='col-sm-12'>
-                                        <div class='card'>
-                                            <div class='card-body'>
-                                                <h5 class='d-flex align-items-center mb-3'>
-                                                    Project Status
-                                                </h5>
-                                                <p>Web Design</p>
-                                                <div
-                                                    class='progress mb-3'
-                                                    style={{ height: "5px" }}
+                                                    onClick={submitHandler}
                                                 >
-                                                    <div
-                                                        class='progress-bar bg-primary'
-                                                        role='progressbar'
-                                                        style={{ width: "80%" }}
-                                                        aria-valuenow='80'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                                <p>Website Markup</p>
-                                                <div
-                                                    class='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        class='progress-bar bg-danger'
-                                                        role='progressbar'
-                                                        style={{ width: "72%" }}
-                                                        aria-valuenow='72'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                                <p>One Page</p>
-                                                <div
-                                                    class='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        class='progress-bar bg-success'
-                                                        role='progressbar'
-                                                        style={{ width: "89%" }}
-                                                        aria-valuenow='89'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                                <p>Mobile Template</p>
-                                                <div
-                                                    class='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        class='progress-bar bg-warning'
-                                                        role='progressbar'
-                                                        style={{ width: "55%" }}
-                                                        aria-valuenow='55'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                                <p>Backend API</p>
-                                                <div
-                                                    class='progress'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        class='progress-bar bg-info'
-                                                        role='progressbar'
-                                                        style={{ width: "66%" }}
-                                                        aria-valuenow='66'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
+                                                    {loading ? (
+                                                        <Spinner
+                                                            size={0.5}
+                                                            color={"#ff5500"}
+                                                        />
+                                                    ) : (
+                                                        "Edit"
+                                                    )}
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -459,7 +440,12 @@ export default Profile;
 
 export async function getServerSideProps(context) {
     // Load the CSS file
-    const cssFilePath = path.join(process.cwd(), "styles", "css", "profile.css");
+    const cssFilePath = path.join(
+        process.cwd(),
+        "styles",
+        "css",
+        "profile.css"
+    );
     const fileContent = await getCssData(cssFilePath);
     return { props: { fileContent } };
 }

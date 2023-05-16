@@ -96,13 +96,13 @@ function Profile({ fileContent }) {
                             <Link href='/'>Wasetak-Free&emsp;{">"}</Link>
                         </li>
                         <li>
-                            <Link href='/user-profile/profile.html'>
+                            <Link href='/profile'>
                                 Profile
                             </Link>
                         </li>
                     </ul>
                 </div>
-                <div className='container'>
+                <div className='container' style={{minHeight: `calc(100vh - 187px)`}}>
                     <div className='main-body'>
                         <div className='row gutters-sm'>
                             <div className='col-md-4 mb-3'>
@@ -126,20 +126,6 @@ function Profile({ fileContent }) {
                                                 <p className='text-muted font-size-sm'>
                                                     Cairo, Egypt, Eg
                                                 </p>
-                                                <button
-                                                    style={{
-                                                        marginRight: "10px",
-                                                    }}
-                                                    className='btn btn-primary'
-                                                >
-                                                    Follow
-                                                </button>
-                                                <button
-                                                    onClick={toggleChat}
-                                                    className='btn btn-outline-primary'
-                                                >
-                                                    Message
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -363,172 +349,6 @@ function Profile({ fileContent }) {
                                     </div>
                                 </div>
 
-                                <div className='row gutters-sm'>
-                                    <div className='col-sm-6 mb-3'>
-                                        <div className='card h-100'>
-                                            <div className='card-body'>
-                                                <h6 className='d-flex align-items-center mb-3'>
-                                                    <i className='material-icons text-info mr-2'>
-                                                        assignment
-                                                    </i>
-                                                    Project Status
-                                                </h6>
-                                                <small>Web Design</small>
-                                                <div
-                                                    className='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        className='progress-bar bg-primary'
-                                                        role='progressbar'
-                                                        style={{ width: "80%" }}
-                                                        aria-valuenow='80'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                                <small>Website Markup</small>
-                                                <div
-                                                    className='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        className='progress-bar bg-primary'
-                                                        role='progressbar'
-                                                        style={{ width: "72%" }}
-                                                        aria-valuenow='72'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                                <small>One Page</small>
-                                                <div
-                                                    className='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        className='progress-bar bg-primary'
-                                                        role='progressbar'
-                                                        style={{ width: "89%" }}
-                                                        aria-valuenow='89'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                                <small>Mobile Template</small>
-                                                <div
-                                                    className='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        className='progress-bar bg-primary'
-                                                        role='progressbar'
-                                                        style={{ width: "55%" }}
-                                                        aria-valuenow='55'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                                <small>Backend API</small>
-                                                <div
-                                                    className='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        className='progress-bar bg-primary'
-                                                        role='progressbar'
-                                                        style={{ width: "66%" }}
-                                                        aria-valuenow='66'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className='col-sm-6 mb-3'>
-                                        <div className='card h-100'>
-                                            <div className='card-body'>
-                                                <h6 className='d-flex align-items-center mb-3'>
-                                                    <i className='material-icons text-info mr-2'>
-                                                        assignment
-                                                    </i>
-                                                    Project Status
-                                                </h6>
-                                                <small>Web Design</small>
-                                                <div
-                                                    className='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        className='progress-bar bg-primary'
-                                                        role='progressbar'
-                                                        style={{ width: "80%" }}
-                                                        aria-valuenow='80'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                                <small>Website Markup</small>
-                                                <div
-                                                    className='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        className='progress-bar bg-primary'
-                                                        role='progressbar'
-                                                        style={{ width: "50%" }}
-                                                        aria-valuenow='50'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                                <small>One Page</small>
-                                                <div
-                                                    className='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        className='progress-bar bg-primary'
-                                                        role='progressbar'
-                                                        style={{ width: "89%" }}
-                                                        aria-valuenow='89'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                                <small>Mobile Template</small>
-                                                <div
-                                                    className='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        className='progress-bar bg-primary'
-                                                        role='progressbar'
-                                                        style={{ width: "55%" }}
-                                                        aria-valuenow='55'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                                <small>Backend API</small>
-                                                <div
-                                                    className='progress mb-3'
-                                                    style={{ height: "5px" }}
-                                                >
-                                                    <div
-                                                        className='progress-bar bg-primary'
-                                                        role='progressbar'
-                                                        style={{ width: "66%" }}
-                                                        aria-valuenow='66'
-                                                        aria-valuemin='0'
-                                                        aria-valuemax='100'
-                                                    ></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

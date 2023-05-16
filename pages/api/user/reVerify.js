@@ -36,7 +36,7 @@ const handler = nc().post(async (req, res) => {
         res.status(200).json({ message: "Verification email sent" });
     } catch (error) {
         console.error("Error resending verification email:", error.message);
-        res.status(500).json({ error: "An error occurred" });
+        res.status(500).json({ error: error.message });
     }
 });
 

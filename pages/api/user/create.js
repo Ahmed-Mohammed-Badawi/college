@@ -22,37 +22,49 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 
-const handler = nc()
-    .post(async (req, res) => {
-        const { name, email, password, userName } = req.body;
+const handler = nc().post(async (req, res) => {
+    const { name, email, password, userName } = req.body;
 
-        try {
-            // Create user in Firebase Authentication
-            const auth = getAuth();
-            const { user } = await createUserWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
+    try {
+        // Create user in Firebase Authentication
+        const auth = getAuth();
+        const { user } = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
 
-            // Send email verification
-            await sendEmailVerification(auth.currentUser);
+        // Send email verification
+        await sendEmailVerification(auth.currentUser);
 
-            // Save user data in Realtime Database with token
-            const db = getDatabase();
-            const userRef = ref(db, `Users/${user.uid}`);
-            await set(userRef, {
-                name,
-                email,
-                userName,
-                token: null, // Initialize token as null
-            });
+        // Save user data in Realtime Database with token
+        const db = getDatabase();
+        const userRef = ref(db, `Users/${user.uid}`);
+        await set(userRef, {
+            id: user.uid,
+            name,
+            email,
+            username: userName,
+            email,
+            password,
+            phone: "",
+            photo: "https://firebasestorage.googleapis.com/v0/b/wassetkfree.appspot.com/o/avatar.jpg?alt=media&token=20edd7ca-1994-4559-ab1e-786d088092f2",
+            country: "EG",
+            bio: "",
+            message: "",
+            status: "online",
+            regTime: new Date().getMilliseconds(),
+            lastSeen: new Date().getMilliseconds(),
+            typingTo: "noOne",
+            balance: 0,
+            token: null, // Initialize token as null
+        });
 
-            res.status(201).json({ message: "User created successfully" });
-        } catch (error) {
-            console.error("Error creating user:", error.message);
-            res.status(500).json({ error: error.message });
-        }
-    })
+        res.status(201).json({ message: "User created successfully" });
+    } catch (error) {
+        console.error("Error creating user:", error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
 
 export default handler;
