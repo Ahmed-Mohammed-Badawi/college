@@ -11,7 +11,7 @@ const Proposal = ({ freelancer, text, imageUrl, userId, days, cost, user, postId
     // ROUTER
     const router = useRouter();
 
-    const theSameUser = user.uid === userId;
+    const theSameUser = user?.uid === userId;
 
     const handleDelete = () => {
         if(!confirm("Are you sure you want to delete this proposal?")) return;
