@@ -1,25 +1,72 @@
-import React, { useState } from "react";
+import React, {useState, useEffect} from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
+import {useRouter} from "next/router";
 import PopupChatWindow from "@/components/PopupChatWindow";
 import getCssData from "@/helpers/readCssFile";
+import {toast} from "react-toastify";
+import axios from "axios";
 
 //NODE
 const path = require("path");
 
-function Profile({ fileContent }) {
+function Profile({fileContent, user}) {
+
+    // ROUTER
+    const router = useRouter();
+
+    // STATE
     const [isOpen, setIsOpen] = useState(false);
+    const [userData, setUserData] = useState(null);
+    const [anotherUser, setAnotherUser] = useState(null);
 
     const toggleChat = () => {
         setIsOpen(!isOpen);
     };
 
+    useEffect(() => {
+        if (!user) {
+            router.push("/login")
+                .then(() => {
+                    toast.error("You must be logged in to access this page");
+                })
+        }
+    }, [user, router])
+
+    // SEND REQUEST TO GET THE USER DATA FROM THE SERVER
+    useEffect(() => {
+
+        const {id} = router.query;
+
+        if (!id) {
+            axios.get('/api/user/get')
+                .then(res => {
+                    setUserData(res.data)
+                })
+                .catch(err => {
+                    toast.error(err.response.data.error)
+                })
+        } else {
+            setAnotherUser(true)
+            axios.get('/api/user/getSpecificUser?id=' + id)
+                .then(res => {
+                    setUserData(res.data)
+                })
+                .catch(err => {
+                    toast.error(err.response.data.error)
+                })
+        }
+
+    }, [router])
+
+    console.log(user)
+
     return (
         <>
             <Head>
-                <meta charset='UTF-8' />
-                <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+                <meta charset='UTF-8'/>
+                <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
                 <meta
                     name='viewport'
                     content='width=device-width, initial-scale=1.0'
@@ -34,7 +81,7 @@ function Profile({ fileContent }) {
 
                 {/* <link rel='stylesheet' href='/css/profile.css' /> */}
                 <style
-                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                    dangerouslySetInnerHTML={{__html: fileContent}}
                 ></style>
             </Head>
             <div>
@@ -78,6 +125,11 @@ function Profile({ fileContent }) {
                                     </Link>
                                 </li>
                                 <li>
+                                    <Link href='/questions'>
+                                        Ask a Question
+                                    </Link>
+                                </li>
+                                <li>
                                     <Link href='/jobs'>projects</Link>
                                 </li>
                                 <li>
@@ -111,20 +163,20 @@ function Profile({ fileContent }) {
                                         <div className='d-flex flex-column align-items-center text-center'>
                                             <div className='userImg_container'>
                                                 <Image
-                                                    width={48}
-                                                    height={48}
-                                                    src='/images/icons8-person-48.png'
+                                                    width={80}
+                                                    height={80}
+                                                    src={(userData && userData.photo) ? userData.photo : '/images/icons8-person-48.png'}
                                                     alt='Admin'
                                                     className='rounded-circle'
                                                 />
                                             </div>
                                             <div className='mt-3'>
-                                                <h4>User_2</h4>
+                                                <h4>{userData?.name || 'Name'}</h4>
                                                 <p className='text-secondary mb-1'>
-                                                    Full Stack Developer
+                                                    {userData?.username || 'Username'}
                                                 </p>
                                                 <p className='text-muted font-size-sm'>
-                                                    Cairo, Egypt, Eg
+                                                    {userData && userData.country}
                                                 </p>
                                             </div>
                                         </div>
@@ -157,7 +209,8 @@ function Profile({ fileContent }) {
                                                         x2='22'
                                                         y2='12'
                                                     ></line>
-                                                    <path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'></path>
+                                                    <path
+                                                        d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'></path>
                                                 </svg>
                                                 Website
                                             </h6>
@@ -179,7 +232,8 @@ function Profile({ fileContent }) {
                                                     strokeLinejoin='round'
                                                     className='feather feather-github mr-2 icon-inline'
                                                 >
-                                                    <path d='M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22'></path>
+                                                    <path
+                                                        d='M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22'></path>
                                                 </svg>
                                                 Github
                                             </h6>
@@ -201,7 +255,8 @@ function Profile({ fileContent }) {
                                                     strokeLinejoin='round'
                                                     className='feather feather-twitter mr-2 icon-inline text-info'
                                                 >
-                                                    <path d='M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z'></path>
+                                                    <path
+                                                        d='M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z'></path>
                                                 </svg>
                                                 Twitter
                                             </h6>
@@ -259,7 +314,8 @@ function Profile({ fileContent }) {
                                                     strokeLinejoin='round'
                                                     className='feather feather-facebook mr-2 icon-inline text-primary'
                                                 >
-                                                    <path d='M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z'></path>
+                                                    <path
+                                                        d='M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z'></path>
                                                 </svg>
                                                 @Wasetak-Free
                                             </h6>
@@ -280,10 +336,10 @@ function Profile({ fileContent }) {
                                                 </h6>
                                             </div>
                                             <div className='col-sm-9 text-secondary'>
-                                                User_name
+                                                {userData?.name || 'Name'}
                                             </div>
                                         </div>
-                                        <hr />
+                                        <hr/>
                                         <div className='row'>
                                             <div className='col-sm-3'>
                                                 <h6 className='mb-0'>
@@ -291,28 +347,19 @@ function Profile({ fileContent }) {
                                                 </h6>
                                             </div>
                                             <div className='col-sm-9 text-secondary'>
-                                                User_Email@Wasetak-Free.com
+                                                {userData?.username || 'Username'}
                                             </div>
                                         </div>
-                                        <hr />
+                                        <hr/>
                                         <div className='row'>
                                             <div className='col-sm-3'>
                                                 <h6 className='mb-0'>Bio</h6>
                                             </div>
                                             <div className='col-sm-9 text-secondary'>
-                                                02-25223689
+                                                {userData?.bio || 'Bio'}
                                             </div>
                                         </div>
-                                        <hr />
-                                        <div className='row'>
-                                            <div className='col-sm-3'>
-                                                <h6 className='mb-0'>Link</h6>
-                                            </div>
-                                            <div className='col-sm-9 text-secondary'>
-                                                (012) 131415166
-                                            </div>
-                                        </div>
-                                        <hr />
+                                        <hr/>
                                         <div className='row'>
                                             <div className='col-sm-3'>
                                                 <h6 className='mb-0'>
@@ -320,43 +367,40 @@ function Profile({ fileContent }) {
                                                 </h6>
                                             </div>
                                             <div className='col-sm-9 text-secondary'>
-                                                Heliopolis, Cairo, EG
+                                                {userData?.country || 'Country'}
                                             </div>
                                         </div>
-                                        <hr />
-                                        <div className='row'>
-                                            <div className='col-sm-3'>
-                                                <h6 className='mb-0'>
-                                                    Message
-                                                </h6>
-                                            </div>
-                                            <div className='col-sm-9 text-secondary'>
-                                                Heliopolis, Cairo, EG
-                                            </div>
-                                        </div>
-                                        <hr />
-                                        <div className='row'>
-                                            <div className='col-sm-12'>
-                                                <Link
-                                                    className='btn btn-info '
-                                                    target='__blank'
-                                                    href='/profile/edit'
-                                                >
-                                                    Edit
-                                                </Link>
-                                            </div>
-                                        </div>
+                                        {!anotherUser && (
+                                            <>
+                                                <hr/>
+                                                <div className='row'>
+                                                    <div className='col-sm-12'>
+                                                        <Link
+                                                            className='btn btn-info '
+                                                            href='#'
+                                                            role='button'
+                                                            onClick={() => {
+                                                                router.push('/profile/edit');
+                                                            }}>
+                                                            Edit
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <PopupChatWindow isOpen={isOpen} toggle={toggleChat} />
+            {
+                anotherUser && <PopupChatWindow isOpen={isOpen} toggle={toggleChat}/>
+            }
         </>
-    );
+    )
+        ;
 }
 
 export default Profile;
@@ -365,5 +409,5 @@ export async function getServerSideProps(context) {
     // Load the CSS file
     const cssFilePath = path.join(process.cwd(), "styles", "css", "profile.css");
     const fileContent = await getCssData(cssFilePath);
-    return { props: { fileContent } };
+    return {props: {fileContent}};
 }

@@ -1,18 +1,76 @@
+import {useEffect, useState} from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import {useRouter} from "next/router";
 import Proposal from "@/components/proposal";
 import ProposalForm from "@/components/proposalForm";
 import getCssData from "@/helpers/readCssFile";
+import React from "react";
+import {logoutHandler} from "@/helpers/logoutHandler";
+import {toast} from "react-toastify";
+import axios from "axios";
 
 //NODE
 const path = require("path");
 
-export default function Home({ fileContent }) {
+export default function Home({fileContent, user}) {
+
+    const router = useRouter();
+
+    // State
+    const [post, setPost] = useState({});
+    const [postId, setPostId] = useState(null);
+    const [comments, setComments] = useState([]);
+
+    // EFFECT TO GET THE POST DATA
+    useEffect(() => {
+        // GET THE ID FROM THE URL
+        const {id} = router.query;
+        setPostId(id);
+
+        if (!id) {
+            toast.error("No post found with the given id.");
+            return;
+        }
+
+        axios.get(`/api/posts/getPost?id=${id}`).then((res) => {
+            console.log(res.data);
+            setPost(res.data);
+
+            // Convert the Object of comments to an array
+            if (res.data?.Comments) {
+                const commentsArray = Object.values(res.data?.Comments || {});
+                setComments(commentsArray);
+            }
+        })
+            .catch((err) => {
+                toast.error(err.response?.data?.error || "Something went wrong while fetching the posts.");
+            });
+    }, [router])
+
+    // HANDLERS
+    const refreshTheProposals = () => {
+        axios.get(`/api/posts/getPost?id=${postId}`).then((res) => {
+            console.log(res.data);
+            setPost(res.data);
+
+            // Convert the Object of comments to an array
+            if (res.data?.Comments) {
+                const commentsArray = Object.values(res.data?.Comments || {});
+                setComments(commentsArray);
+            }
+        })
+            .catch((err) => {
+                toast.error(err.response?.data?.error || "Something went wrong while fetching the posts.");
+            });
+    }
+
+
     return (
         <>
             <Head>
-                <meta charSet='utf-8' />
+                <meta charSet='utf-8'/>
                 <meta
                     name='viewport'
                     content='width=device-width, initial-scale=1'
@@ -32,7 +90,7 @@ export default function Home({ fileContent }) {
                     href='https://unpkg.com/boxicons@latest/css/boxicons.min.css'
                 />
                 {/* <script defer src='/JS/post.js'></script> */}
-                <meta charSet='UTF-8' />
+                <meta charSet='UTF-8'/>
                 <meta
                     name='viewport'
                     content='width=device-width, initial-scale=1.0'
@@ -45,7 +103,7 @@ export default function Home({ fileContent }) {
                 />
                 <title>Frontend Mentor | Interactive comments section</title>
                 <style
-                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                    dangerouslySetInnerHTML={{__html: fileContent}}
                 ></style>
             </Head>
 
@@ -63,13 +121,43 @@ export default function Home({ fileContent }) {
                         </ul>
                     </div>
                     <div className='nav-bar2'>
-                        <ul>
-                            <li>
-                                <Link href='/login'>Log In</Link>
-                            </li>
-                            <li>
-                                <Link href='/registration'>Sign Up</Link>
-                            </li>
+                        <ul style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            gap: "1rem",
+                            listStyle: "none",
+                            paddingRight: "1rem",
+                        }}>
+                            {user ? (
+                                <>
+                                    <li>
+                                        <Link href='/profile'>Profile</Link>
+                                    </li>
+                                    <li>
+                                        <Link href='#' onClick={async () => {
+                                            const status = await logoutHandler();
+                                            if (status) {
+                                                router.push("/")
+                                                    .then(() => {
+                                                        router.reload();
+                                                    })
+                                            } else {
+                                                toast.error("Something went wrong while logging out");
+                                            }
+                                        }}>Logout</Link>
+                                    </li>
+                                </>
+                            ) : (
+                                <>
+                                    <li>
+                                        <Link href='/login'>Log In</Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/registration'>Sign Up</Link>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                     </div>
                 </nav>
@@ -79,6 +167,11 @@ export default function Home({ fileContent }) {
                             <li>
                                 <Link href='/freelancer/hire'>
                                     Hire a Freelancer
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href='/questions'>
+                                    Ask a Question
                                 </Link>
                             </li>
                             <li>
@@ -96,11 +189,11 @@ export default function Home({ fileContent }) {
             </header>
             <div className='title'>
                 <div className='title-a'>
-                    <h1>New Company logo</h1>
+                    <h1>{post?.project_name}</h1>
                 </div>
                 <div className='budget'>
                     <h1>Budget:</h1>
-                    <h1>$45-$120 USD</h1>
+                    <h1>${post?.cost} USD</h1>
                 </div>
             </div>
             <div className='nav-list'>
@@ -115,54 +208,60 @@ export default function Home({ fileContent }) {
                         <Link href='#'>Post &emsp;{">"}</Link>
                     </li>
                     <li>
-                        <Link href='#'>New Company logo</Link>
+                        <Link href='#'>{post?.project_name}</Link>
                     </li>
                 </ul>
             </div>
             <div className='main-contaner'>
-                <h1>Job Description:</h1>
+                <h1 style={{
+                    fontSize: "1.5rem",
+                    fontWeight: "bold",
+                    marginBottom: "1rem",
+                    textTransform: "uppercase",
+                }}>Job Description:</h1>
                 <p className='description'>
-                    Hello fellow freelancers,
-                    <br />
-                    <br />
-                    I am in need of a graphic designer to create a simple
-                    company logo for the company website, social platforms and
-                    other business documents.
-                    <br />
-                    <br />
-                    <br />
-                    Company Name - Waveform Media
-                    <br />
-                    <br />
-                    Logo idea - A simple audio waveform design in the shape of
-                    the company initials WM is all it really needs to be.
-                    However, if you can incorporate a curling ocean wave into
-                    the audio waveform as well, that would add a nice personal
-                    touch to the logo. I&#39;ve added 3 images to hopefully help
-                    out in the right direction.
-                    <br />
-                    Best of luck to everyone and thank you for your time,
-                    <br />
-                    <br />
-                    <br />
-                    Jeff
+                    {post?.text}
                 </p>
-                <br />
-                <br />
-                <hr />
-                <br />
-                <br />
+                <br/>
+                <br/>
+                <hr/>
+                <br/>
+                <br/>
+                <div>
+                    <h4 style={{
+                        fontSize: ".9rem",
+                    }}>ATTACHMENTS</h4>
+                    {post?.meme && (<Link href={post?.meme || ''} style={{
+                        color: "#333333",
+                        textDecoration: "underline",
+                        fontSize: ".8rem",
+                        padding: ".5rem 1rem",
+                        backgroundColor: "#f5f5f5",
+                        borderRadius: "5px",
+                        display: "inline-block",
+                        width: "100%",
+                        marginTop: ".5rem",
+                        marginBottom: ".5rem",
+                        // Make it max height 2 lines
+                        maxHeight: "3rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                    }}>{post?.meme || ''}</Link>)}
+                </div>
+                <br/>
+                <br/>
                 <div className='About-the-Client'>
                     <h2> About the Client: </h2>
                     <div className='c-userr'>
                         <Image
-                            src='/images/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg'
+                            src={post?.db || '/images/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg'}
                             alt=''
                             className='usrr-imgg'
                             width={300}
                             height={300}
                         />
-                        <p className='usr-name'>User_Name</p>
+                        <p className='usr-name'>{post?.name || "Creator name"}</p>
                     </div>
                     <div>
                         <fieldset className='rating'>
@@ -278,36 +377,27 @@ export default function Home({ fileContent }) {
                             ></label>
                         </fieldset>
                     </div>
-                    <div className='egy'>
-                        <Image
-                            src='/images/640px-Flag_of_Egypt.svg.png'
-                            alt=''
-                            width={100}
-                            height={67}
-                            className='usr-imgg'
-                        />
-                        <p> Cairo,Egypt</p>
-                    </div>
                 </div>
             </div>
             <div className='comments_section'>
                 <h2 className='comments_section__h2'>Proposals</h2>
-                <ProposalForm />
-                <Proposal
-                    freelancer='John Doe'
-                    text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, metus ac malesuada faucibus, metus nulla efficitur purus, at aliquam dolor diam quis nibh. Sed posuere fermentum consequat. Sed vel augue in urna suscipit tincidunt.'
-                    imageUrl='https://via.placeholder.com/150'
-                />
-                <Proposal
-                    freelancer='John Doe'
-                    text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, metus ac malesuada faucibus, metus nulla efficitur purus, at aliquam dolor diam quis nibh. Sed posuere fermentum consequat. Sed vel augue in urna suscipit tincidunt.'
-                    imageUrl='https://via.placeholder.com/150'
-                />
-                <Proposal
-                    freelancer='John Doe'
-                    text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, metus ac malesuada faucibus, metus nulla efficitur purus, at aliquam dolor diam quis nibh. Sed posuere fermentum consequat. Sed vel augue in urna suscipit tincidunt.'
-                    imageUrl='https://via.placeholder.com/150'
-                />
+                {(user && user?.uid !== post?.id) && <ProposalForm postId={postId} refreshTheProposals={refreshTheProposals}/>}
+                {(comments && comments.length > 0) && comments.map((comment) => {
+                    return (
+                        <Proposal
+                            userId={comment?.id}
+                            key={comment.cId}
+                            proposalId={comment?.cId}
+                            postId={postId}
+                            freelancer={comment?.mane || "Freelancer name"}
+                            text={comment?.comment}
+                            imageUrl={comment?.dp || `https://via.placeholder.com/150`}
+                            days={comment?.days}
+                            cost={comment?.cost}
+                            user={user}
+                        />
+                    )
+                })}
             </div>
         </>
     );
@@ -317,5 +407,5 @@ export async function getServerSideProps(context) {
     // Load the CSS file
     const cssFilePath = path.join(process.cwd(), "styles", "css", "post.css");
     const fileContent = await getCssData(cssFilePath);
-    return { props: { fileContent } };
+    return {props: {fileContent}};
 }

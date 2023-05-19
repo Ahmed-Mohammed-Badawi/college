@@ -43,7 +43,6 @@ const handler = nc().post(async (req, res) => {
         await set(userRef, {
             id: user.uid,
             name,
-            email,
             username: userName,
             email,
             password,

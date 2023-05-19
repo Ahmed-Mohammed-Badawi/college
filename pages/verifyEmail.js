@@ -1,23 +1,32 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import styles from "../styles/css/Registration.module.css";
 import Script from "next/script";
 import Head from "next/head";
 import Link from "next/link";
 import getCssData from "@/helpers/readCssFile";
 import axios from "axios";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 import Spinner from "@/components/spinner/Spinner";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 
 //NODE
 const path = require("path");
 
-export default function RegistrationPage({ fileContent }) {
+export default function RegistrationPage({fileContent, user}) {
     // ROUTER
     const router = useRouter();
 
     const [loading, setLoading] = useState(false);
     const [resendLoading, setResendLoading] = useState(false);
+
+    useEffect(() => {
+        if (user) {
+            router.push("/")
+                .then(() => {
+                    toast.error("You must be logged out to access this page");
+                })
+        }
+    }, [user])
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -52,6 +61,11 @@ export default function RegistrationPage({ fileContent }) {
                     // Delete the email and password in local storage
                     localStorage.removeItem("emailForSignIn");
                     localStorage.removeItem("passwordForSignIn");
+
+                    // Reload the page after 2 seconds
+                    setTimeout(() => {
+                        router.reload();
+                    }, 2000);
                 });
             })
             .catch((error) => {
@@ -59,8 +73,8 @@ export default function RegistrationPage({ fileContent }) {
                 console.log(error);
                 toast.error(
                     error.response?.data?.error ||
-                        error.message ||
-                        "Error Verifying user!"
+                    error.message ||
+                    "Error Verifying user!"
                 );
             });
     };
@@ -95,8 +109,8 @@ export default function RegistrationPage({ fileContent }) {
                 console.log(error);
                 toast.error(
                     error.response?.data?.error ||
-                        error.message ||
-                        "Error sending verification email!"
+                    error.message ||
+                    "Error sending verification email!"
                 );
             });
     };
@@ -104,7 +118,7 @@ export default function RegistrationPage({ fileContent }) {
     return (
         <>
             <Head>
-                <meta charSet='utf-8' />
+                <meta charSet='utf-8'/>
                 <meta
                     name='viewport'
                     content='width=device-width, initial-scale=1'
@@ -122,14 +136,14 @@ export default function RegistrationPage({ fileContent }) {
                     rel='stylesheet'
                     href='https://unpkg.com/boxicons@latest/css/boxicons.min.css'
                 />
-                <link rel='preconnect' href='https://fonts.googleapis.com' />
+                <link rel='preconnect' href='https://fonts.googleapis.com'/>
                 <link
                     rel='preconnect'
                     href='https://fonts.gstatic.com'
                     crossOrigin='true'
                 />
                 <style
-                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                    dangerouslySetInnerHTML={{__html: fileContent}}
                 ></style>
             </Head>
             <div className={styles.container}>
@@ -142,7 +156,7 @@ export default function RegistrationPage({ fileContent }) {
                     <form onSubmit={handleSubmit}>
                         <button type='submit' className={styles.tutu}>
                             {loading ? (
-                                <Spinner size={0.5} color={"#ff5500"} />
+                                <Spinner size={0.5} color={"#ff5500"}/>
                             ) : (
                                 "Verify"
                             )}
@@ -153,7 +167,7 @@ export default function RegistrationPage({ fileContent }) {
                             className={styles.tutu_resend}
                         >
                             {resendLoading ? (
-                                <Spinner size={0.5} color={"#ff5500"} />
+                                <Spinner size={0.5} color={"#ff5500"}/>
                             ) : (
                                 "Resend"
                             )}
@@ -183,5 +197,5 @@ export async function getServerSideProps(context) {
         "registration.css"
     );
     const fileContent = await getCssData(cssFilePath);
-    return { props: { fileContent } };
+    return {props: {fileContent}};
 }

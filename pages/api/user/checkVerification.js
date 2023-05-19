@@ -2,10 +2,9 @@ import { initializeApp } from "firebase/app";
 import {
     getAuth,
     signInWithEmailAndPassword,
-    sendEmailVerification,
     getIdToken,
 } from "firebase/auth";
-import { getDatabase, ref, update } from "firebase/database";
+import { getDatabase, ref, update, set } from "firebase/database";
 import nc from "next-connect";
 
 // Initialize Firebase
@@ -44,6 +43,10 @@ const handler = nc().put(async (req, res) => {
         const db = getDatabase();
         const userRef = ref(db, `Users/${user.uid}`);
         await update(userRef, { token, verified: true });
+
+        // Add the token to new collection called "Tokens" By the user ID
+        const tokenRef = ref(db, `Tokens/${user.uid}`);
+        await set(tokenRef, { token });
 
         res.status(200).json({ token });
     } catch (error) {

@@ -193,6 +193,7 @@ const Form = () => {
                     id='fileUploader'
                     name='fileUploader'
                     value={postData.fileUploader}
+                    accept={"image/*"}
                     onChange={(e) => {
                         setImage(e.target.files[0]);
                     }}

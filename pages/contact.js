@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Script from "next/script";
 import getCssData from "@/helpers/readCssFile";
+import {logoutHandler} from "@/helpers/logoutHandler";
+import {toast} from "react-toastify";
 
 //NODE
 const path = require("path");
 
-export default function ContactForm({fileContent}) {
+export default function ContactForm({fileContent, user}) {
+
+    // STATES
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [companyName, setCompanyName] = useState("");
@@ -102,12 +106,35 @@ export default function ContactForm({fileContent}) {
                     </div>
                     <div className={"nav-bar2"}>
                         <ul>
-                            <li>
-                                <Link href='/login'>Log In</Link>
-                            </li>
-                            <li>
-                                <Link href='/registration'>Sign Up</Link>
-                            </li>
+                            {user ? (
+                                <>
+                                    <li>
+                                        <Link href='/profile'>Profile</Link>
+                                    </li>
+                                    <li>
+                                        <Link href='#' onClick={async () => {
+                                            const status = await logoutHandler();
+                                            if (status) {
+                                                router.push("/")
+                                                    .then(() => {
+                                                        router.reload();
+                                                    })
+                                            }else {
+                                                toast.error("Something went wrong while logging out");
+                                            }
+                                        }}>Logout</Link>
+                                    </li>
+                                </>
+                            ) : (
+                                <>
+                                    <li>
+                                        <Link href='/login'>Log In</Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/registration'>Sign Up</Link>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                     </div>
                 </nav>
@@ -117,6 +144,11 @@ export default function ContactForm({fileContent}) {
                             <li>
                                 <Link href='/freelancer/hire'>
                                     Hire a Freelancer
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href='/questions'>
+                                    Ask a Question
                                 </Link>
                             </li>
                             <li>

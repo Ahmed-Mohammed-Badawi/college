@@ -3,11 +3,14 @@ import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
 import getCssData from "@/helpers/readCssFile";
+import React from "react";
+import {logoutHandler} from "@/helpers/logoutHandler";
+import {toast} from "react-toastify";
 
 //NODE
 const path = require("path");
 
-export default function AboutUs({fileContent}) {
+export default function AboutUs({fileContent, user}) {
     return (
         <>
             <Head>
@@ -62,12 +65,35 @@ export default function AboutUs({fileContent}) {
                         </div>
                         <div className='nav-bar2'>
                             <ul>
-                                <li>
-                                    <Link href='/login'>Log In</Link>
-                                </li>
-                                <li>
-                                    <Link href='/registration'>Sign Up</Link>
-                                </li>
+                                {user ? (
+                                    <>
+                                        <li>
+                                            <Link href='/profile'>Profile</Link>
+                                        </li>
+                                        <li>
+                                            <Link href='#' onClick={async () => {
+                                                const status = await logoutHandler();
+                                                if (status) {
+                                                    router.push("/")
+                                                        .then(() => {
+                                                            router.reload();
+                                                        })
+                                                }else {
+                                                    toast.error("Something went wrong while logging out");
+                                                }
+                                            }}>Logout</Link>
+                                        </li>
+                                    </>
+                                ) : (
+                                    <>
+                                        <li>
+                                            <Link href='/login'>Log In</Link>
+                                        </li>
+                                        <li>
+                                            <Link href='/registration'>Sign Up</Link>
+                                        </li>
+                                    </>
+                                )}
                             </ul>
                         </div>
                     </nav>
@@ -77,6 +103,11 @@ export default function AboutUs({fileContent}) {
                                 <li>
                                     <Link href='/freelancer/hire'>
                                         Hire a Freelancer
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href='/questions'>
+                                        Ask a Question
                                     </Link>
                                 </li>
                                 <li>

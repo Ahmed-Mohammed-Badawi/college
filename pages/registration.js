@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import styles from "../styles/css/Registration.module.css";
 import Script from "next/script";
 import Head from "next/head";
@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 //NODE
 const path = require("path");
 
-export default function RegistrationPage({ fileContent }) {
+export default function RegistrationPage({ fileContent, user }) {
     // ROUTER
     const router = useRouter();
 
@@ -22,6 +22,15 @@ export default function RegistrationPage({ fileContent }) {
     const [password, setPassword] = useState("");
     const [userName, setUserName] = useState("");
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (user) {
+            router.push("/")
+                .then(() => {
+                    toast.error("You must be logged out to access this page");
+                })
+        }
+    }, [user])
 
     // HANDLER
     const handleSubmit = (event) => {

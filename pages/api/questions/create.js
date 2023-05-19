@@ -39,9 +39,6 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-    // GET THE TOKEN FROM THE COOKIE
-    const token = req.cookies.token;
-
     // VERIFY TOKEN
     const auth = getAuth();
 
@@ -75,7 +72,7 @@ export default async function handler(req, res) {
                     return;
                 }
 
-                const { title, type, days, price, description, category } = fields;
+                const { title, description } = fields;
                 const { image } = files;
                 let imageUrl;
 
@@ -103,43 +100,33 @@ export default async function handler(req, res) {
 
                 // Create a new post-entry in the Realtime Database
                 const newPostId = String(Date.now()); // Generate a unique ID based on the current time in milliseconds
-                const newPostRef = ref(database, `Posts/${newPostId}`);
+                const newPostRef = ref(database, `Questions/Questions_/${newPostId}`);
                 const newPostData = {
-                    id: userId,
-                    name: userData?.name,
-                    db: userData?.photo,
+                    user_id: userId,
                     pId: newPostId,
-                    project_name: title,
-                    type: "Image",
+                    header: title,
                     text: description,
-                    pViews: 0,
                     pComments: 0,
-                    meme: imageUrl ? imageUrl : null,
-                    vine: null,
-                    pTime: new Date().getTime(), // Use getTime() to get the timestamp in milliseconds
-                    project_type: type === "provider" ? 1 : 0,
-                    category: category,
-                    day: days,
-                    cost: price,
-                    status: "on",
+                    meme: imageUrl ? imageUrl : 'noImage',
+                    vine: 'noVine',
                 };
 
                 set(newPostRef, newPostData)
                     .then(() => {
                         console.log(
-                            "Post saved successfully with ID:",
+                            "Question saved successfully with ID:",
                             newPostId
                         );
                     })
                     .catch((error) => {
-                        console.error("Error saving post:", error);
+                        console.error("Error saving Question:", error);
                     });
 
-                res.status(200).json({ message: "Post created successfully" });
+                res.status(200).json({ message: "Question created successfully" });
             });
         } catch (error) {
-            console.error("Error creating post:", error);
-            res.status(500).json({ error: "Failed to create post." });
+            console.error("Error creating Question:", error);
+            res.status(500).json({ error: "Failed to create Question." });
         }
     } else {
         res.status(405).json({ error: "Method not allowed." });

@@ -2,20 +2,38 @@ import React, { useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import getCssData from "@/helpers/readCssFile";
 import axios from "axios";
 import Spinner from "@/components/spinner/Spinner";
+import {toast} from "react-toastify";
 
 //NODE
 const path = require("path");
 
-function Profile({ fileContent }) {
+function Profile({ fileContent, user }) {
+
+    // ROUTER
+    const router = useRouter();
+
     // STATES
     const [loading, setLoading] = React.useState(false); // loading state
     const [fullName, setFullName] = React.useState("");
     const [userName, setUserName] = React.useState("");
     const [bio, setBio] = React.useState("");
     const [country, setCountry] = React.useState("");
+
+    const [userData, setUserData] = React.useState(null);
+
+    useEffect(() => {
+        if (!user) {
+            router.push("/login")
+                .then(() => {
+                    toast.error("You must be logged in to access this page");
+                })
+        }
+    }, [user])
+
 
     useEffect(() => {
         axios
@@ -27,6 +45,8 @@ function Profile({ fileContent }) {
                 setUserName(res.data.username);
                 setBio(res.data.bio);
                 setCountry(res.data.country);
+
+                setUserData(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -118,6 +138,11 @@ function Profile({ fileContent }) {
                                     </Link>
                                 </li>
                                 <li>
+                                    <Link href='/questions'>
+                                        Ask a Question
+                                    </Link>
+                                </li>
+                                <li>
                                     <Link href='/jobs'>projects</Link>
                                 </li>
                                 <li>
@@ -155,20 +180,20 @@ function Profile({ fileContent }) {
                                         <div class='d-flex flex-column align-items-center text-center'>
                                             <div className='userImg_container'>
                                                 <Image
-                                                    src='/images/icons8-person-48.png'
+                                                    width={80}
+                                                    height={80}
+                                                    src={(userData && userData.photo) ? userData.photo : '/images/icons8-person-48.png'}
                                                     alt='Admin'
-                                                    class='rounded-circle p-1 bg-primarybg-primary'
-                                                    height={48}
-                                                    width={48}
+                                                    className='rounded-circle'
                                                 />
                                             </div>
                                             <div class='mt-3'>
-                                                <h4>User_2</h4>
+                                                <h4>{userData?.name || 'Name'}</h4>
                                                 <p class='text-secondary mb-1'>
-                                                    Full Stack Developer
+                                                    {userData?.username || 'Username'}
                                                 </p>
                                                 <p class='text-muted font-size-sm'>
-                                                    Cairo, Egypt, Eg
+                                                    {userData && userData.country}
                                                 </p>
                                             </div>
                                         </div>

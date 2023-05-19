@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import ProjectForm from "@/components/projectForm";
+import QuestionForm from "@/components/questionForm";
 import getCssData from "@/helpers/readCssFile";
 
 // NOTIFICATIONS
@@ -11,7 +11,7 @@ import {useEffect} from "react";
 //NODE
 const path = require("path");
 
-export default function HireForm({ fileContent, user }) {
+export default function QuestionPage({ fileContent, user }) {
 
     const router = useRouter();
 
@@ -27,7 +27,7 @@ export default function HireForm({ fileContent, user }) {
     return (
         <>
             <Head>
-                <title>Find a Freelancer</title>
+                <title>Ask a Question</title>
                 <meta
                     name='viewport'
                     content='width=device-width, initial-scale=1'
@@ -58,23 +58,22 @@ export default function HireForm({ fileContent, user }) {
                     dangerouslySetInnerHTML={{ __html: fileContent }}
                 ></style>
             </Head>
-            <div className='fullpage'>
+            <div className='fullpage' style={{minHeight: '100vh'}}>
                 <div className='logo'>
                     <p>
                         <Link href='/'>Wasetak-Free</Link>
                     </p>
                 </div>
                 <div className='title'>
-                    <h1>Tell us what you need done</h1>
+                    <h1>Tell us what is your problem?</h1>
                     <h3>
-                        Contact skilled freelancers within minutes. View
-                        profiles, ratings, portfolios and chat with them. Pay
-                        the freelancer only when you are 100% satisfied with
-                        their work
+                        We will help you find the best solution for your problem and connect you with the best experts in the field
+                        to help you solve your problem in the best way possible.
+
                     </h3>
                 </div>
                 <div className='form'>
-                    <ProjectForm />
+                    <QuestionForm />
                 </div>
             </div>
         </>

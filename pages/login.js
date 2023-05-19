@@ -3,7 +3,7 @@ import Link from "next/link";
 import Script from "next/script";
 import getCssData from "@/helpers/readCssFile";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Spinner from "@/components/spinner/Spinner";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -11,7 +11,7 @@ import axios from "axios";
 //NODE
 const path = require("path");
 
-export default function Login({ fileContent }) {
+export default function Login({ fileContent, user }) {
     // ROUTER
     const router = useRouter();
 
@@ -19,6 +19,15 @@ export default function Login({ fileContent }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (user) {
+            router.push("/")
+                .then(() => {
+                    toast.error("You must be logged out to access this page");
+                })
+        }
+    }, [user])
 
     // HANDLER
     const handleSubmit = (event) => {
@@ -53,6 +62,9 @@ export default function Login({ fileContent }) {
                 // Redirect to home page and show toast
                 router.push("/").then(() => {
                     toast.success("Logged in successfully!");
+
+                    // Reload the page to get the user data
+                    router.reload();
                 });
             })
             .catch((error) => {
