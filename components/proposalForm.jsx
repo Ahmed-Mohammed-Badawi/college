@@ -39,7 +39,7 @@ function ProposalForm({postId, refreshTheProposals}) {
                 refreshTheProposals();
             })
             .catch((err) => {
-                toast.error(err.response?.data?.error|| err?.error || "Something went wrong");
+                toast.error(err.response?.data?.error || "Something went wrong");
                 setLoading(false);
             });
     }
