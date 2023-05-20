@@ -1,6 +1,6 @@
 import nc from "next-connect";
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue } from "firebase/database";
+import {getDatabase, ref, onValue, get} from "firebase/database";
 
 // Initialize Firebase app
 const firebaseConfig = {
@@ -23,19 +23,13 @@ const handler = nc();
 handler.get(async (req, res) => {
     const postsRef = ref(db, "Posts");
 
-    try {
-        onValue(postsRef, (snapshot) => {
-            const posts = [];
-            snapshot.forEach((childSnapshot) => {
-                const post = childSnapshot.val();
-                posts.push(post);
-            });
+    // Get posts from Realtime Database
+    const snapshot = await get(postsRef);
 
-            res.status(200).json(posts);
-        });
-    } catch (error) {
-        console.log("Error retrieving posts:", error);
-        res.status(500).json({ error: "Failed to retrieve posts" });
+    if (!snapshot.exists()) {
+        return res.status(404).json({ error: "Posts not found" });
+    } else {
+        return res.status(200).json(snapshot.val());
     }
 });
 

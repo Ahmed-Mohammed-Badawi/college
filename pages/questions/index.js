@@ -22,7 +22,7 @@ export default function QuestionPage({ fileContent, user }) {
                     toast.error("You must be logged in to access this page");
                 })
         }
-    }, [user])
+    }, [user, router])
 
     return (
         <>

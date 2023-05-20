@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 
-const Proposal = ({ freelancer, text, imageUrl, userId, days, cost, user, postId, proposalId }) => {
+const Proposal = ({ freelancer, text, imageUrl, userId, days, cost, user, postId, proposalId, refreshTheProposals }) => {
 
     // ROUTER
     const router = useRouter();
@@ -19,7 +19,7 @@ const Proposal = ({ freelancer, text, imageUrl, userId, days, cost, user, postId
         axios.delete(`/api/posts/deleteProposal?postId=${postId}&commentId=${proposalId}`)
             .then((_) => {
                 toast.success("Proposal deleted successfully");
-                router.reload();
+                refreshTheProposals();
             })
             .catch((err) => {
                 toast.error(err.response?.data?.error || "Something went wrong");

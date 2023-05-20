@@ -60,8 +60,6 @@ function Profile({fileContent, user}) {
 
     }, [router])
 
-    console.log(user)
-
     return (
         <>
             <Head>

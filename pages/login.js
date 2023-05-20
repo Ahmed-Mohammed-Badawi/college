@@ -27,7 +27,7 @@ export default function Login({ fileContent, user }) {
                     toast.error("You must be logged out to access this page");
                 })
         }
-    }, [user])
+    }, [user, router])
 
     // HANDLER
     const handleSubmit = (event) => {

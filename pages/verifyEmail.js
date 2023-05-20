@@ -26,7 +26,7 @@ export default function RegistrationPage({fileContent, user}) {
                     toast.error("You must be logged out to access this page");
                 })
         }
-    }, [user])
+    }, [user, router])
 
     const handleSubmit = (event) => {
         event.preventDefault();

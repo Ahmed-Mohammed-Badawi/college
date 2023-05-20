@@ -125,20 +125,9 @@ export default async function handler(req, res) {
                 };
 
                 set(newPostRef, newPostData)
-                    .then(() => {
-                        console.log(
-                            "Post saved successfully with ID:",
-                            newPostId
-                        );
-                    })
-                    .catch((error) => {
-                        console.error("Error saving post:", error);
-                    });
-
                 res.status(200).json({ message: "Post created successfully" });
             });
         } catch (error) {
-            console.error("Error creating post:", error);
             res.status(500).json({ error: "Failed to create post." });
         }
     } else {

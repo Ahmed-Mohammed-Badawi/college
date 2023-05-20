@@ -21,7 +21,12 @@ function Jobs({fileContent, user}) {
     useEffect(() => {
         axios.get("/api/posts").then((res) => {
             console.log(res.data);
-            setPosts(res.data);
+
+            // Create a new array with the posts from the object
+            const posts = Object.values(res.data);
+            // Set the posts
+            setPosts(posts);
+
         })
             .catch((err) => {
                 toast.error(err.message || err.error || "Something went wrong while fetching the posts.");
@@ -183,7 +188,7 @@ function Jobs({fileContent, user}) {
                     <ProjectFilter onFilter={(data) => searchHandler(data)}/>
                 </div>
                 <div className='posts'>
-                    {postsToRender && postsToRender.reverse().map((post) => {
+                    {postsToRender && postsToRender.map((post) => {
                         return (
                             <ProjectComponent
                                 key={post.pId}

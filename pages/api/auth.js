@@ -1,5 +1,5 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { initializeApp } from "firebase/app";
+import {getAuth, onAuthStateChanged} from "firebase/auth";
+import {initializeApp} from "firebase/app";
 import nc from "next-connect";
 
 
@@ -18,22 +18,17 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const handler = nc().get(async (req, res) => {
-    try {
-        // Get user from Firebase authentication
-        const auth = getAuth(app);
+const handler = nc();
+handler.get(async (req, res) => {
+    const auth = getAuth(app);
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                res.status(200).json({ user });
-            } else {
-                res.status(401).json({ error: "User not found" });
-            }
-        });
-    } catch (error) {
-        console.error("Error getting user:", error.message);
-        res.status(500).json({ error: error.message });
-    }
+    // Check if user is logged in
+    if(!auth.currentUser) return res.status(401).json({error: "User not found"});
+
+    // Get user data
+    const user = auth.currentUser;
+
+    res.status(200).json({user});
 });
 
 export default handler;

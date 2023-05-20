@@ -59,6 +59,8 @@ export default function Home({fileContent, user}) {
             if (res.data?.Comments) {
                 const commentsArray = Object.values(res.data?.Comments || {});
                 setComments(commentsArray);
+            }else {
+                setComments([]);
             }
         })
             .catch((err) => {
@@ -395,6 +397,7 @@ export default function Home({fileContent, user}) {
                             days={comment?.days}
                             cost={comment?.cost}
                             user={user}
+                            refreshTheProposals={refreshTheProposals}
                         />
                     )
                 })}
