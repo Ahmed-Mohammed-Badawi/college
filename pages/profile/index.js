@@ -20,6 +20,7 @@ function Profile({fileContent, user}) {
     const [isOpen, setIsOpen] = useState(false);
     const [userData, setUserData] = useState(null);
     const [anotherUser, setAnotherUser] = useState(null);
+    const [userIdFromUrl, setUserIdFromUrl] = useState(null);
 
     const toggleChat = () => {
         setIsOpen(!isOpen);
@@ -49,6 +50,7 @@ function Profile({fileContent, user}) {
                 })
         } else {
             setAnotherUser(true)
+            setUserIdFromUrl(id)
             axios.get('/api/user/getSpecificUser?id=' + id)
                 .then(res => {
                     setUserData(res.data)
@@ -123,12 +125,17 @@ function Profile({fileContent, user}) {
                                     </Link>
                                 </li>
                                 <li>
+                                    <Link href='/jobs'>projects</Link>
+                                </li>
+                                <li>
                                     <Link href='/questions'>
-                                        Ask a Question
+                                        Questions
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href='/jobs'>projects</Link>
+                                    <Link href='/questions/create'>
+                                        Ask a Question
+                                    </Link>
                                 </li>
                                 <li>
                                     <Link href='/about_us'>About</Link>
@@ -394,7 +401,7 @@ function Profile({fileContent, user}) {
                 </div>
             </div>
             {
-                anotherUser && <PopupChatWindow isOpen={isOpen} toggle={toggleChat}/>
+                (anotherUser && user?.uid !== userIdFromUrl) && <PopupChatWindow isOpen={isOpen} toggle={toggleChat}/>
             }
         </>
     )

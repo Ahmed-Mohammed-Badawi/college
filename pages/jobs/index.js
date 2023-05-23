@@ -154,12 +154,17 @@ function Jobs({fileContent, user}) {
                                 </Link>
                             </li>
                             <li>
+                                <Link href='/jobs'>projects</Link>
+                            </li>
+                            <li>
                                 <Link href='/questions'>
-                                    Ask a Question
+                                    Questions
                                 </Link>
                             </li>
                             <li>
-                                <Link href='/jobs'>projects</Link>
+                                <Link href='/questions/create'>
+                                    Ask a Question
+                                </Link>
                             </li>
                             <li>
                                 <Link href='/about_us'>About</Link>

@@ -106,15 +106,20 @@ export default function AboutUs({fileContent, user}) {
                                     </Link>
                                 </li>
                                 <li>
+                                    <Link href='/jobs'>projects</Link>
+                                </li>
+                                <li>
                                     <Link href='/questions'>
+                                        Questions
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href='/questions/create'>
                                         Ask a Question
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href='/jobs'>projects</Link>
-                                </li>
-                                <li>
-                                    <Link href='/aboutus'>About</Link>
+                                    <Link href='/about_us'>About</Link>
                                 </li>
                                 <li>
                                     <Link href='/contact'>Contact Us</Link>

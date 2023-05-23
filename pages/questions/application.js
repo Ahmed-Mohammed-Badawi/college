@@ -1,10 +1,10 @@
-import {useEffect, useState} from "react";
+import {useEffect, useId, useState} from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/router";
-import Proposal from "@/components/proposal";
-import ProposalForm from "@/components/proposalForm";
+import Comment from "@/components/comment";
+import QuestionCommentForm from "@/components/questionCommentForm";
 import getCssData from "@/helpers/readCssFile";
 import React from "react";
 import {logoutHandler} from "@/helpers/logoutHandler";
@@ -19,7 +19,8 @@ export default function Home({fileContent, user}) {
     const router = useRouter();
 
     // State
-    const [post, setPost] = useState({});
+    const [question, setQuestion] = useState({});
+
     const [postId, setPostId] = useState(null);
     const [comments, setComments] = useState([]);
 
@@ -34,9 +35,9 @@ export default function Home({fileContent, user}) {
             return;
         }
 
-        axios.get(`/api/posts/getPost?id=${id}`).then((res) => {
+        axios.get(`/api/questions/getQuestion?id=${id}`).then((res) => {
             console.log(res.data);
-            setPost(res.data);
+            setQuestion(res.data);
 
             // Convert the Object of comments to an array
             if (res.data?.Comments) {
@@ -51,9 +52,9 @@ export default function Home({fileContent, user}) {
 
     // HANDLERS
     const refreshTheProposals = () => {
-        axios.get(`/api/posts/getPost?id=${postId}`).then((res) => {
+        axios.get(`/api/questions/getQuestion?id=${postId}`).then((res) => {
             console.log(res.data);
-            setPost(res.data);
+            setQuestion(res.data);
 
             // Convert the Object of comments to an array
             if (res.data?.Comments) {
@@ -196,17 +197,13 @@ export default function Home({fileContent, user}) {
             </header>
             <div className='title'>
                 <div className='title-a'>
-                    <h1>{post?.project_name}</h1>
-                </div>
-                <div className='budget'>
-                    <h1>Budget:</h1>
-                    <h1>${post?.cost} USD</h1>
+                    <h1>{question?.header}</h1>
                 </div>
             </div>
             <div className='nav-list'>
                 <ul>
                     <li>
-                        <Link href='/main'>Wasetak-Free&emsp;{">"}</Link>
+                        <Link href='/'>Wasetak-Free&emsp;{">"}</Link>
                     </li>
                     <li>
                         <Link href='/jobs'>Jobs&emsp;{">"}</Link>
@@ -215,7 +212,7 @@ export default function Home({fileContent, user}) {
                         <Link href='#'>Post &emsp;{">"}</Link>
                     </li>
                     <li>
-                        <Link href='#'>{post?.project_name}</Link>
+                        <Link href='#'>{question?.header}</Link>
                     </li>
                 </ul>
             </div>
@@ -225,9 +222,9 @@ export default function Home({fileContent, user}) {
                     fontWeight: "bold",
                     marginBottom: "1rem",
                     textTransform: "uppercase",
-                }}>Job Description:</h1>
+                }}>Question Description:</h1>
                 <p className='description'>
-                    {post?.text}
+                    {question?.text}
                 </p>
                 <br/>
                 <br/>
@@ -238,7 +235,7 @@ export default function Home({fileContent, user}) {
                     <h4 style={{
                         fontSize: ".9rem",
                     }}>ATTACHMENTS</h4>
-                    {post?.meme && (<Link href={post?.meme || ''} style={{
+                    {(question?.meme !== "" && question?.meme !== "noImage") && (<Link href={question?.meme || ''} style={{
                         color: "#333333",
                         textDecoration: "underline",
                         fontSize: ".8rem",
@@ -254,153 +251,37 @@ export default function Home({fileContent, user}) {
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                         whiteSpace: "nowrap",
-                    }}>{post?.meme || ''}</Link>)}
+                    }}>{question?.meme || ''}</Link>)}
                 </div>
                 <br/>
                 <br/>
                 <div className='About-the-Client'>
-                    <h2> About the Client: </h2>
+                    <h2 style={{textTransform: "uppercase"}}> about the questioner : </h2>
                     <div className='c-userr'>
                         <Image
-                            src={post?.db || '/images/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg'}
+                            src={question?.user?.photo || '/images/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg'}
                             alt=''
                             className='usrr-imgg'
                             width={300}
                             height={300}
                         />
-                        <p className='usr-name'>{post?.name || "Creator name"}</p>
-                    </div>
-                    <div>
-                        <fieldset className='rating'>
-                            <input
-                                type='radio'
-                                id='star5'
-                                name='rating'
-                                value='5'
-                            />
-                            <label
-                                className='full'
-                                htmlFor='star5'
-                                title='Awesome - 5 stars'
-                            ></label>
-                            <input
-                                type='radio'
-                                id='star4half'
-                                name='rating'
-                                value='4 and a half'
-                            />
-                            <label
-                                className='half'
-                                htmlFor='star4half'
-                                title='Pretty good - 4.5 stars'
-                            ></label>
-                            <input
-                                type='radio'
-                                id='star4'
-                                name='rating'
-                                value='4'
-                            />
-                            <label
-                                className='full'
-                                htmlFor='star4'
-                                title='Pretty good - 4 stars'
-                            ></label>
-                            <input
-                                type='radio'
-                                id='star3half'
-                                name='rating'
-                                value='3 and a half'
-                            />
-                            <label
-                                className='half'
-                                htmlFor='star3half'
-                                title='Meh - 3.5 stars'
-                            ></label>
-                            <input
-                                type='radio'
-                                id='star3'
-                                name='rating'
-                                value='3'
-                            />
-                            <label
-                                className='full'
-                                htmlFor='star3'
-                                title='Meh - 3 stars'
-                            ></label>
-                            <input
-                                type='radio'
-                                id='star2half'
-                                name='rating'
-                                value='2 and a half'
-                            />
-                            <label
-                                className='half'
-                                htmlFor='star2half'
-                                title='Kinda bad - 2.5 stars'
-                            ></label>
-                            <input
-                                type='radio'
-                                id='star2'
-                                name='rating'
-                                value='2'
-                            />
-                            <label
-                                className='full'
-                                htmlFor='star2'
-                                title='Kinda bad - 2 stars'
-                            ></label>
-                            <input
-                                type='radio'
-                                id='star1half'
-                                name='rating'
-                                value='1 and a half'
-                            />
-                            <label
-                                className='half'
-                                htmlFor='star1half'
-                                title='Meh - 1.5 stars'
-                            ></label>
-                            <input
-                                type='radio'
-                                id='star1'
-                                name='rating'
-                                value='1'
-                            />
-                            <label
-                                className='full'
-                                htmlFor='star1'
-                                title='Sucks big time - 1 star'
-                            ></label>
-                            <input
-                                type='radio'
-                                id='starhalf'
-                                name='rating'
-                                value='half'
-                            />
-                            <label
-                                className='half'
-                                htmlFor='starhalf'
-                                title='Sucks big time - 0.5 stars'
-                            ></label>
-                        </fieldset>
+                        <p className='usr-name'>{question?.user?.name || "Creator name"}</p>
                     </div>
                 </div>
             </div>
             <div className='comments_section'>
-                <h2 className='comments_section__h2'>Proposals</h2>
-                {(user && user?.uid !== post?.id) && <ProposalForm postId={postId} refreshTheProposals={refreshTheProposals}/>}
-                {(comments && comments.length > 0) && comments.map((comment) => {
+                <h2 className='comments_section__h2'>Comments</h2>
+                {(user && user?.uid !== question?.id) && <QuestionCommentForm questionId={postId} refreshTheProposals={refreshTheProposals}/>}
+                {(comments && comments.length > 0) && comments.map((comment, index) => {
                     return (
-                        <Proposal
+                        <Comment
                             userId={comment?.id}
-                            key={comment.cId}
+                            key={comment.cId + index}
                             proposalId={comment?.cId}
                             postId={postId}
                             freelancer={comment?.mane || "Freelancer name"}
                             text={comment?.comment}
                             imageUrl={comment?.dp || `https://via.placeholder.com/150`}
-                            days={comment?.days}
-                            cost={comment?.cost}
                             user={user}
                             refreshTheProposals={refreshTheProposals}
                         />
@@ -411,9 +292,9 @@ export default function Home({fileContent, user}) {
     );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     // Load the CSS file
-    const cssFilePath = path.join(process.cwd(), "styles", "css", "post.css");
+    const cssFilePath = path.join(process.cwd(), "styles", "css", "question.css");
     const fileContent = await getCssData(cssFilePath);
     return {props: {fileContent}};
 }
