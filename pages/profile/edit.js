@@ -26,12 +26,16 @@ function Profile({ fileContent, user }) {
     const [userData, setUserData] = React.useState(null);
 
     useEffect(() => {
-        if (!user) {
-            router.push("/login")
-                .then(() => {
-                    toast.error("You must be logged in to access this page");
-                })
-        }
+        const timer = setTimeout(() => {
+            if (!user) {
+                router.push("/login")
+                    .then(() => {
+                        toast.error("You must be logged in to access this page");
+                    })
+            }
+        }, 3000)
+
+        return () => clearTimeout(timer);
     }, [user, router])
 
 
@@ -67,11 +71,13 @@ function Profile({ fileContent, user }) {
             })
             .then((res) => {
                 setLoading(false);
-                console.log(res.data);
+                toast.success("Profile updated successfully");
+                router.push("/profile");
             })
             .catch((err) => {
                 setLoading(false);
                 console.log(err);
+                toast.error(err?.response?.data?.message || err?.message || "Something went wrong");
             });
     };
 

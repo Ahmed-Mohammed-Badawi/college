@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import Link from "next/link";
 import ProjectForm from "@/components/projectForm";
 import getCssData from "@/helpers/readCssFile";
@@ -11,17 +11,21 @@ import {useEffect} from "react";
 //NODE
 const path = require("path");
 
-export default function HireForm({ fileContent, user }) {
+export default function HireForm({fileContent, user}) {
 
     const router = useRouter();
 
     useEffect(() => {
-        if (!user) {
-            router.push("/login")
-                .then(() => {
-                    toast.error("You must be logged in to access this page");
-                })
-        }
+        const timer = setTimeout(() => {
+            if (!user) {
+                router.push("/login")
+                    .then(() => {
+                        toast.error("You must be logged in to access this page");
+                    })
+            }
+        }, 3000)
+
+        return () => clearTimeout(timer);
     }, [user, router])
 
     return (
@@ -45,17 +49,17 @@ export default function HireForm({ fileContent, user }) {
                     rel='stylesheet'
                     href='https://unpkg.com/boxicons@latest/css/boxicons.min.css'
                 />
-                <link rel='preconnect' href='https://fonts.googleapis.com' />
+                <link rel='preconnect' href='https://fonts.googleapis.com'/>
                 <link
                     rel='preconnect'
                     href='https://fonts.gstatic.com'
                     crossorigin
                 />
 
-                <meta charset='UTF-8' />
-                <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+                <meta charset='UTF-8'/>
+                <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
                 <style
-                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                    dangerouslySetInnerHTML={{__html: fileContent}}
                 ></style>
             </Head>
             <div className='fullpage'>
@@ -74,7 +78,7 @@ export default function HireForm({ fileContent, user }) {
                     </h3>
                 </div>
                 <div className='form'>
-                    <ProjectForm />
+                    <ProjectForm/>
                 </div>
             </div>
         </>
@@ -85,5 +89,5 @@ export async function getServerSideProps(context) {
     // Load the CSS file
     const cssFilePath = path.join(process.cwd(), "styles", "css", "hire.css");
     const fileContent = await getCssData(cssFilePath);
-    return { props: { fileContent } };
+    return {props: {fileContent}};
 }

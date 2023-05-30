@@ -60,7 +60,7 @@ export default function Home({fileContent, user}) {
             if (res.data?.Comments) {
                 const commentsArray = Object.values(res.data?.Comments || {});
                 setComments(commentsArray);
-            }else {
+            } else {
                 setComments([]);
             }
         })
@@ -203,13 +203,10 @@ export default function Home({fileContent, user}) {
             <div className='nav-list'>
                 <ul>
                     <li>
-                        <Link href='/'>Wasetak-Free&emsp;{">"}</Link>
+                        <Link href='/'>Wasetak-Free &emsp;{">"}</Link>
                     </li>
                     <li>
-                        <Link href='/jobs'>Jobs&emsp;{">"}</Link>
-                    </li>
-                    <li>
-                        <Link href='#'>Post &emsp;{">"}</Link>
+                        <Link href='/questions'>Questions &emsp;{">"}</Link>
                     </li>
                     <li>
                         <Link href='#'>{question?.header}</Link>
@@ -226,37 +223,32 @@ export default function Home({fileContent, user}) {
                 <p className='description'>
                     {question?.text}
                 </p>
-                <br/>
-                <br/>
-                <hr/>
-                <br/>
-                <br/>
                 <div>
-                    <h4 style={{
+                    {(question?.meme !== "" && question?.meme !== "noImage") && (<h4 style={{
                         fontSize: ".9rem",
-                    }}>ATTACHMENTS</h4>
-                    {(question?.meme !== "" && question?.meme !== "noImage") && (<Link href={question?.meme || ''} style={{
-                        color: "#333333",
-                        textDecoration: "underline",
-                        fontSize: ".8rem",
-                        padding: ".5rem 1rem",
-                        backgroundColor: "#f5f5f5",
-                        borderRadius: "5px",
-                        display: "inline-block",
-                        width: "100%",
-                        marginTop: ".5rem",
-                        marginBottom: ".5rem",
-                        // Make it max height 2 lines
-                        maxHeight: "3rem",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                    }}>{question?.meme || ''}</Link>)}
+                    }}>ATTACHMENTS</h4>)}
+                    {(question?.meme !== "" && question?.meme !== "noImage") && (
+                        <Link href={question?.meme || ''} style={{
+                            color: "#333333",
+                            textDecoration: "underline",
+                            fontSize: ".8rem",
+                            padding: ".5rem 1rem",
+                            backgroundColor: "#f5f5f5",
+                            borderRadius: "5px",
+                            display: "inline-block",
+                            width: "100%",
+                            marginTop: ".5rem",
+                            marginBottom: ".5rem",
+                            // Make it max height 2 lines
+                            maxHeight: "3rem",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                        }}>{question?.meme || ''}</Link>)}
                 </div>
                 <br/>
                 <br/>
                 <div className='About-the-Client'>
-                    <h2 style={{textTransform: "uppercase"}}> about the questioner : </h2>
                     <div className='c-userr'>
                         <Image
                             src={question?.user?.photo || '/images/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg'}
@@ -265,13 +257,17 @@ export default function Home({fileContent, user}) {
                             width={300}
                             height={300}
                         />
-                        <p className='usr-name'>{question?.user?.name || "Creator name"}</p>
+                        <div>
+                            <p className='usr-name'>{question?.user?.name || "Creator name"}</p>
+                            <span className={'usr-creator'}>CREATOR</span>
+                        </div>
                     </div>
                 </div>
             </div>
             <div className='comments_section'>
                 <h2 className='comments_section__h2'>Comments</h2>
-                {(user && user?.uid !== question?.id) && <QuestionCommentForm questionId={postId} refreshTheProposals={refreshTheProposals}/>}
+                {(user && user?.uid !== question?.id) &&
+                    <QuestionCommentForm questionId={postId} refreshTheProposals={refreshTheProposals}/>}
                 {(comments && comments.length > 0) && comments.map((comment, index) => {
                     return (
                         <Comment

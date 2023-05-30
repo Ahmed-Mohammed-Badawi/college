@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
+import {useState} from "react";
+import {useRouter} from "next/router";
 import styles from "./Form.module.css";
 import Spinner from "@/components/spinner/Spinner";
 import axios from "axios";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 
 const Form = () => {
     // ROUTER
@@ -35,12 +35,24 @@ const Form = () => {
             .then((data) => {
                 setLoading(false);
                 // Handle the response data
+                toast.success("Question created successfully");
                 console.log(data);
+
+                // CLEAR FORM
+                setPostData({
+                    projectTitle: "",
+                    projectDescription: "",
+                });
+                setImage(null);
+
+                // REDIRECT
+                router.push("/questions");
             })
             .catch((error) => {
                 setLoading(false);
                 // Handle any errors
                 console.error(error);
+                toast.error(error?.response?.data?.message || error?.message || "Something went wrong");
             });
     }
 
@@ -99,7 +111,7 @@ const Form = () => {
                 )}
             </div>
             <button type='submit'>
-                {loading ? <Spinner size={0.5} color={"#ff5500"} /> : "Create"}
+                {loading ? <Spinner size={0.5} color={"#ff5500"}/> : "Create"}
             </button>
         </form>
     );

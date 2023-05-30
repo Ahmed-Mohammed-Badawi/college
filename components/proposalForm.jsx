@@ -2,6 +2,7 @@ import {useState} from "react";
 import styles from "./ProposalForm.module.css";
 import {toast} from "react-toastify";
 import axios from "axios";
+import Spinner from "@/components/spinner/Spinner";
 
 function ProposalForm({postId, refreshTheProposals}) {
 
@@ -86,7 +87,7 @@ function ProposalForm({postId, refreshTheProposals}) {
                 ></textarea>
             </div>
             <button type='submit' className={styles.submitButton}>
-                Submit
+                {loading ? (<Spinner size={0.5} color={"#ff5500"} />) : 'Submit'}
             </button>
         </form>
     );

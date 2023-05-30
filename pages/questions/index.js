@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React, {useEffect, useState} from "react";
 import Link from "next/link";
+import {useRouter} from "next/router";
 import QuestionFilter from "@/components/QuestionsFilter";
 import Question from "@/components/questionComponent";
 import getCssData from "@/helpers/readCssFile";
@@ -17,6 +18,8 @@ function Jobs({fileContent, user}) {
     const [questions, setQuestions] = useState([]);
     const [filteredQuestions, setFilteredQuestions] = useState([]);
 
+    // ROUTER
+    const router = useRouter();
 
     useEffect(() => {
         axios.get("/api/questions").then((res) => {

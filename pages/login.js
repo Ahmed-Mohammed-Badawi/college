@@ -54,7 +54,6 @@ export default function Login({ fileContent, user }) {
             })
             .then((response) => {
                 setLoading(false);
-                console.log(response);
                 // Save the token in local storage and cookie
                 localStorage.setItem("token", response.data.token);
                 document.cookie = `token=${response.data.token}; path=/`;
@@ -125,6 +124,7 @@ export default function Login({ fileContent, user }) {
                             <input
                                 type='email'
                                 placeholder='Enter Email'
+                                value={email}
                                 onChange={(event) => {
                                     setEmail(event.target.value);
                                 }}

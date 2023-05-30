@@ -5,6 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import Spinner from "@/components/spinner/Spinner";
 
 const Proposal = ({ freelancer, text, imageUrl, userId, days, cost, user, postId, proposalId, refreshTheProposals }) => {
 
@@ -13,15 +14,20 @@ const Proposal = ({ freelancer, text, imageUrl, userId, days, cost, user, postId
 
     const theSameUser = user?.uid === userId;
 
+    // STATES FOR LOADING
+    const [loading, setLoading] = React.useState(false);
+
     const handleDelete = () => {
         if(!confirm("Are you sure you want to delete this proposal?")) return;
-
+        setLoading(true);
         axios.delete(`/api/posts/deleteProposal?postId=${postId}&commentId=${proposalId}`)
             .then((_) => {
+                setLoading(false);
                 toast.success("Proposal deleted successfully");
                 refreshTheProposals();
             })
             .catch((err) => {
+                setLoading(false);
                 toast.error(err.response?.data?.error || "Something went wrong");
             });
     }
@@ -35,7 +41,7 @@ const Proposal = ({ freelancer, text, imageUrl, userId, days, cost, user, postId
             <div className={styles.header}>
                 <Link href={`/profile?id=${userId}`} passHref><h2>{freelancer}</h2></Link>
                 <div className={styles.buttons}>
-                    {theSameUser && <button onClick={handleDelete} className={styles.delete}>Delete</button>}
+                    {theSameUser && <button onClick={handleDelete} className={styles.delete}>Delete {loading && <Spinner size={0.5} color={"#ffffff"} /> }</button>}
                 </div>
             </div>
             <div className={styles.proposalText}>
@@ -43,7 +49,7 @@ const Proposal = ({ freelancer, text, imageUrl, userId, days, cost, user, postId
                 <p>
                     Price: <span>{cost}$</span> - Time: <span>{days}</span> days
                 </p>
-                <p>{text}</p>
+                <p className={'proposal-text'}>{text}</p>
             </div>
         </div>
     );

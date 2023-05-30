@@ -208,19 +208,46 @@ button:hover {
     border-radius: 15px;
     margin-bottom: 2.5rem;
 }
+
 .main-contaner h1 {
+    position: relative;
+    padding-left: 20px;
     font-size: 20px;
     font-weight: 500;
 }
-.main-contaner h1 + p {
-    font-size: 15px;
-    margin-top: 20px;
-    font-weight: 100;
-    border: 1px solid #ccccccb6;
+
+.main-contaner h1::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    height: 100%;
+    background-color: #0a0a23;
     border-radius: 10px;
-    padding-bottom: 30px;
-    padding-top: 15px;
 }
+
+.main-contaner h1 + p {
+    position: relative;
+    font-size: 15px;
+    font-weight: 100;
+    border-radius: 10px;
+    padding: 10px 30px;
+    color: #4e4e4e;
+    margin: 20px 10px 50px;
+}
+
+.main-contaner h1 + p::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    height: 100%;
+    background-color: #17ce1d;
+    border-radius: 10px;
+}
+
 .nav-list {
     display: flex;
     max-width: 85%;
@@ -359,12 +386,13 @@ button:hover {
 .c-userr {
     display: flex;
     flex-direction: column;
-    /* display: flex; */
     width: 100%;
-    /* grid-area: user; */
     gap: 1rem;
     margin-top: 25px;
     align-items: flex-start;
+    background-color: #EFEFEE;
+    padding: 30px;
+    border-radius: 10px;
 }
 
 .usr-name {
@@ -382,8 +410,9 @@ button:hover {
 }
 .usrr-imgg {
     height: 80px;
-    width: 90px;
-    border-radius: 15px;
+    width: 80px;
+    border-radius: 50%;
+    border: 2px solid #fff;
 }
 .usr-imgg {
     height: 30px;
@@ -470,6 +499,30 @@ button:hover {
     border: 1px solid var(--Light-gray);
     border-radius: 4px;
     resize: none;
+}
+
+
+.usr-name {
+    /* ADD TEXT SHADOW*/
+    text-shadow: 0 0 0.2rem var(--Moderate-blue);
+    margin-bottom: 5px;
+}
+
+.usr-creator{
+    position: relative;
+    font-size: 12px;
+    color: #4e4e4e;
+    padding-left: 10px;
+}
+
+.usr-creator::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background-color: #4e4e4e;
 }
 
 .this-user .usr-name::after {

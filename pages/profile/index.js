@@ -27,12 +27,16 @@ function Profile({fileContent, user}) {
     };
 
     useEffect(() => {
-        if (!user) {
-            router.push("/login")
-                .then(() => {
-                    toast.error("You must be logged in to access this page");
-                })
-        }
+        const timer = setTimeout(() => {
+            if (!user) {
+                router.push("/login")
+                    .then(() => {
+                        toast.error("You must be logged in to access this page");
+                    })
+            }
+        }, 3000)
+
+        return () => clearTimeout(timer);
     }, [user, router])
 
     // SEND REQUEST TO GET THE USER DATA FROM THE SERVER
