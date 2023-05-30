@@ -1,5 +1,6 @@
-// This API HANDLER is used to update the user profile in Firebase Authentication and Realtime Database.
+// HELPER FUNCTION TO CHECK THE TYPE OF THE REQUEST
 import nc from "next-connect";
+// IMPORT THE FIREBASE SDK
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase, update, ref } from "firebase/database";

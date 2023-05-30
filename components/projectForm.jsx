@@ -1,8 +1,10 @@
+// FRAMEWORK
 import { useState } from "react";
 import { useRouter } from "next/router";
+// STYLE
 import styles from "./Form.module.css";
+// COMPONENTS
 import Spinner from "@/components/spinner/Spinner";
-import axios from "axios";
 import { toast } from "react-toastify";
 
 const Form = () => {
@@ -40,15 +42,22 @@ const Form = () => {
             body: data,
         })
             .then((response) => response.json())
-            .then((data) => {
+            .then((_) => {
                 setLoading(false);
-                // Handle the response data
-                console.log(data);
+                //REDIRECT TO PROJECT PAGE
+                router.push(`/jobs`).then(() => {
+                    // Handle the response data
+                    toast.success("Project created successfully");
+                });
             })
             .catch((error) => {
                 setLoading(false);
                 // Handle any errors
-                console.error(error);
+                toast.error(
+                    error?.response?.data?.message ||
+                        error?.message ||
+                        "Project creation failed"
+                );
             });
     }
 
@@ -113,12 +122,17 @@ const Form = () => {
             </div>
             <div className={styles.formGroup}>
                 <label htmlFor='category'>Category</label>
-                <select name='category' id='category' value={postData.projectCategory} onChange={(e) => {
-                    setPostData({
-                        ...postData,
-                        projectCategory: e.target.value,
-                    });
-                }}>
+                <select
+                    name='category'
+                    id='category'
+                    value={postData.projectCategory}
+                    onChange={(e) => {
+                        setPostData({
+                            ...postData,
+                            projectCategory: e.target.value,
+                        });
+                    }}
+                >
                     <option value='web'>Web</option>
                     <option value='mobile'>Mobile</option>
                     <option value='desktop'>Desktop</option>

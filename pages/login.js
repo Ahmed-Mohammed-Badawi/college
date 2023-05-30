@@ -1,14 +1,18 @@
+// FRAMEWORK
 import Head from "next/head";
+import {useEffect, useState} from "react";
 import Link from "next/link";
 import Script from "next/script";
-import getCssData from "@/helpers/readCssFile";
 import { useRouter } from "next/router";
-import {useEffect, useState} from "react";
-import Spinner from "@/components/spinner/Spinner";
-import { toast } from "react-toastify";
+// HELPERS
+import getCssData from "@/helpers/readCssFile";
 import axios from "axios";
+// COMPONENTS
+import Spinner from "@/components/spinner/Spinner";
+// NOTIFICATION
+import { toast } from "react-toastify";
 
-//NODE
+//NODE MODULE TO READ THE FILE
 const path = require("path");
 
 export default function Login({ fileContent, user }) {
@@ -39,8 +43,8 @@ export default function Login({ fileContent, user }) {
         }
 
         // EMAIL VALIDATION with regex
-        const emailregex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
-        if (emailregex.test(email) == false) {
+        const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+        if (emailRegex.test(email) === false) {
             toast.error("Email is not valid!");
             return;
         }
@@ -68,7 +72,6 @@ export default function Login({ fileContent, user }) {
             })
             .catch((error) => {
                 setLoading(false);
-                console.log(error);
                 toast.error(
                     error.response?.data?.error ||
                         error.message ||
@@ -80,7 +83,7 @@ export default function Login({ fileContent, user }) {
     return (
         <>
             <Head>
-                <meta charset='utf-8' />
+                <meta charSet='utf-8' />
                 <meta
                     name='viewport'
                     content='width=device-width, initial-scale=1'
@@ -103,7 +106,7 @@ export default function Login({ fileContent, user }) {
                 <link
                     rel='preconnect'
                     href='https://fonts.gstatic.com'
-                    crossorigin
+                    crossOrigin
                 />
                 <style
                     dangerouslySetInnerHTML={{ __html: fileContent }}
@@ -171,7 +174,7 @@ export default function Login({ fileContent, user }) {
     );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     // Load the CSS file
     const cssFilePath = path.join(process.cwd(), "styles", "css", "login.css");
     const fileContent = await getCssData(cssFilePath);

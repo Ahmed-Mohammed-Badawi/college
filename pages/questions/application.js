@@ -1,17 +1,21 @@
-import {useEffect, useId, useState} from "react";
+// FRAMEWORK
+import React from "react";
+import {useEffect, useState} from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/router";
+// COMPONENTS
 import Comment from "@/components/comment";
 import QuestionCommentForm from "@/components/questionCommentForm";
+// HELPERS
 import getCssData from "@/helpers/readCssFile";
-import React from "react";
 import {logoutHandler} from "@/helpers/logoutHandler";
-import {toast} from "react-toastify";
 import axios from "axios";
+// NOTIFICATIONS
+import {toast} from "react-toastify";
 
-//NODE
+//NODE MODULES TO READ THE CSS FILE
 const path = require("path");
 
 export default function Home({fileContent, user}) {
@@ -36,7 +40,6 @@ export default function Home({fileContent, user}) {
         }
 
         axios.get(`/api/questions/getQuestion?id=${id}`).then((res) => {
-            console.log(res.data);
             setQuestion(res.data);
 
             // Convert the Object of comments to an array
@@ -53,7 +56,6 @@ export default function Home({fileContent, user}) {
     // HANDLERS
     const refreshTheProposals = () => {
         axios.get(`/api/questions/getQuestion?id=${postId}`).then((res) => {
-            console.log(res.data);
             setQuestion(res.data);
 
             // Convert the Object of comments to an array
@@ -98,12 +100,6 @@ export default function Home({fileContent, user}) {
                     name='viewport'
                     content='width=device-width, initial-scale=1.0'
                 />
-                <link
-                    rel='icon'
-                    type='image/png'
-                    sizes='32x32'
-                    href='/favicon-32x32.png'
-                />
                 <title>Frontend Mentor | Interactive comments section</title>
                 <style
                     dangerouslySetInnerHTML={{__html: fileContent}}
@@ -138,7 +134,8 @@ export default function Home({fileContent, user}) {
                                         <Link href='/profile'>Profile</Link>
                                     </li>
                                     <li>
-                                        <Link href='#' onClick={async () => {
+                                        <Link href='#' onClick={async (event) => {
+                                            event.preventDefault();
                                             const status = await logoutHandler();
                                             if (status) {
                                                 router.push("/")

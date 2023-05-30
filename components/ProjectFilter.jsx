@@ -1,4 +1,6 @@
+// FRAMEWORK
 import { useState } from "react";
+// STYLES
 import styles from "./ProjectFilter.module.css";
 
 const ProjectFilter = ({ onFilter }) => {

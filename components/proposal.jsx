@@ -1,16 +1,17 @@
+// FRAMEWORK
 import React from "react";
-import styles from "./proposal.module.css";
 import Image from "next/image";
 import Link from "next/link";
+// STYLES
+import styles from "./proposal.module.css";
+// HELPERS
 import axios from "axios";
+// NOTIFICATIONS
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+// COMPONENTS
 import Spinner from "@/components/spinner/Spinner";
 
 const Proposal = ({ freelancer, text, imageUrl, userId, days, cost, user, postId, proposalId, refreshTheProposals }) => {
-
-    // ROUTER
-    const router = useRouter();
 
     const theSameUser = user?.uid === userId;
 

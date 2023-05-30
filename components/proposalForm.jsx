@@ -1,7 +1,12 @@
+// FRAMEWORK
 import {useState} from "react";
+// STYLES
 import styles from "./ProposalForm.module.css";
+// NOTIFICATIONS
 import {toast} from "react-toastify";
+// HELPERS
 import axios from "axios";
+// COMPONENTS
 import Spinner from "@/components/spinner/Spinner";
 
 function ProposalForm({postId, refreshTheProposals}) {
@@ -31,7 +36,7 @@ function ProposalForm({postId, refreshTheProposals}) {
         };
 
         axios.post(`/api/posts/addComment?postId=${postId}`, data)
-            .then((res) => {
+            .then((_) => {
                 toast.success("Proposal sent successfully");
                 setLoading(false);
                 setCost('');

@@ -1,9 +1,12 @@
+// FRAMEWORK
 import {useState} from "react";
-import "../styles/globals.css";
-import NextNProgress from "nextjs-progressbar";
-
-import axios from "axios";
 import {useEffect} from "react";
+// STYLES
+import "../styles/globals.css";
+// PROGRESS BAR
+import NextNProgress from "nextjs-progressbar";
+// AXIOS
+import axios from "axios";
 // NOTIFICATIONS
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

@@ -1,15 +1,19 @@
+// FRAMEWORK
 import React, {useState, useEffect} from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import {useRouter} from "next/router";
+// COMPONENTS
 import PopupChatWindow from "@/components/PopupChatWindow";
+// HELPERS
 import getCssData from "@/helpers/readCssFile";
-import {toast} from "react-toastify";
 import axios from "axios";
 import {logoutHandler} from "@/helpers/logoutHandler";
+// NOTIFICATION
+import {toast} from "react-toastify";
 
-//NODE
+//NODE MODULES TO READ CSS FILE
 const path = require("path");
 
 function Profile({fileContent, user}) {
@@ -70,8 +74,8 @@ function Profile({fileContent, user}) {
     return (
         <>
             <Head>
-                <meta charset='UTF-8'/>
-                <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+                <meta charSet='UTF-8'/>
+                <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
                 <meta
                     name='viewport'
                     content='width=device-width, initial-scale=1.0'
@@ -81,7 +85,7 @@ function Profile({fileContent, user}) {
                     rel='stylesheet'
                     href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css'
                     integrity='sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N'
-                    crossorigin='anonymous'
+                    crossOrigin='anonymous'
                 />
 
                 {/* <link rel='stylesheet' href='/css/profile.css' /> */}
@@ -116,7 +120,8 @@ function Profile({fileContent, user}) {
                                 <div className='dropdown-options'>
                                     <Link href='/profile'>Dashboard</Link>
                                     <Link href='/profile/edit'>Setting</Link>
-                                    <Link href='#' onClick={async () => {
+                                    <Link href='#' onClick={async (event) => {
+                                        event.preventDefault();
                                         const status = await logoutHandler();
                                         if (status) {
                                             router.push("/")
@@ -425,7 +430,7 @@ function Profile({fileContent, user}) {
 
 export default Profile;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     // Load the CSS file
     const cssFilePath = path.join(process.cwd(), "styles", "css", "profile.css");
     const fileContent = await getCssData(cssFilePath);

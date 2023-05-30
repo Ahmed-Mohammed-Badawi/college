@@ -1,14 +1,17 @@
+// FRAMEWORK
 import Head from "next/head";
+import {useEffect} from "react";
 import {useRouter} from "next/router";
 import Link from "next/link";
+// COMPONENTS
 import QuestionForm from "@/components/questionForm";
+// HELPERS
 import getCssData from "@/helpers/readCssFile";
 
 // NOTIFICATIONS
 import {toast} from "react-toastify";
-import {useEffect} from "react";
 
-//NODE
+//NODE MODULES TO READ CSS FILE
 const path = require("path");
 
 export default function QuestionPage({fileContent, user}) {
@@ -54,11 +57,11 @@ export default function QuestionPage({fileContent, user}) {
                 <link
                     rel='preconnect'
                     href='https://fonts.gstatic.com'
-                    crossorigin
+                    crossOrigin
                 />
 
-                <meta charset='UTF-8'/>
-                <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+                <meta charSet='UTF-8'/>
+                <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
                 <style
                     dangerouslySetInnerHTML={{__html: fileContent}}
                 ></style>
@@ -85,7 +88,7 @@ export default function QuestionPage({fileContent, user}) {
     );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     // Load the CSS file
     const cssFilePath = path.join(process.cwd(), "styles", "css", "hire.css");
     const fileContent = await getCssData(cssFilePath);

@@ -1,16 +1,18 @@
+// FRAMEWORK
+import React from "react";
 import Head from "next/head";
 import Script from "next/script";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import Image from "next/image";
+// HELPERS
 import getCssData from "@/helpers/readCssFile";
-import React from "react";
+import {logoutHandler} from "@/helpers/logoutHandler";
 
-//NODE
+//NODE MODULES TO READ STYLE FILE
 const path = require("path");
 
-// HELPERS
-import {logoutHandler} from "@/helpers/logoutHandler";
+// NOTIFICATION
 import {toast} from "react-toastify";
 
 const HomePage = ({fileContent, user}) => {
@@ -21,7 +23,7 @@ const HomePage = ({fileContent, user}) => {
     return (
         <>
             <Head>
-                <meta charset='utf-8'/>
+                <meta charSet='utf-8'/>
                 <meta
                     name='viewport'
                     content='width=device-width, initial-scale=1'
@@ -48,9 +50,9 @@ const HomePage = ({fileContent, user}) => {
                 <link
                     rel='preconnect'
                     href='https://fonts.gstatic.com'
-                    crossorigin
+                    crossOrigin
                 />
-                <script src='JS/script.js' defer></script>
+                <script src='/JS/script.js' defer></script>
                 <style
                     dangerouslySetInnerHTML={{__html: fileContent}}
                 ></style>
@@ -81,7 +83,8 @@ const HomePage = ({fileContent, user}) => {
                                         <Link href='/profile'>Profile</Link>
                                     </li>
                                     <li>
-                                        <Link href='#' onClick={async () => {
+                                        <Link href='#' onClick={async (event) => {
+                                            event.preventDefault();
                                             const status = await logoutHandler();
                                             if (status) {
                                                 router.push("/")
@@ -144,7 +147,7 @@ const HomePage = ({fileContent, user}) => {
             <section className='hire'>
                 <video autoPlay loop muted className='back-vid'>
                     <source
-                        src='images/production ID-4496268.mp4'
+                        src='/images/production ID-4496268.mp4'
                         type='video/mp4'
                     />
                 </video>
@@ -158,12 +161,12 @@ const HomePage = ({fileContent, user}) => {
                     <li>FREE 100%</li>
                 </ul>
                 <div className='hire-btu'>
-                    <Link href='/freelancer/hire.html'>
+                    <Link href='/freelancer/hire'>
                         {" "}
                         <button className='btu1'>Hire a Freelancer</button>
                         {" "}
                     </Link>
-                    <Link href='job-page/job.html'>
+                    <Link href='/jobs'>
                         {" "}
                         <button className='btu2'>
                             Earn Money Freelancing{" "}
@@ -526,7 +529,7 @@ const HomePage = ({fileContent, user}) => {
 
 export default HomePage;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     // Load the CSS file
     const cssFilePath = path.join(process.cwd(), "styles", "css", "home.css");
     const fileContent = await getCssData(cssFilePath);

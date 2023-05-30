@@ -1,6 +1,10 @@
+// FRAMEWORK
 import { useRef, useState } from "react";
 import Image from "next/image";
+// STYLES
 import styles from "./PopupChatWindow.module.css";
+// NOTIFICATIONS
+import { toast } from "react-toastify";
 
 const PopupChatWindow = ({ isOpen, toggle }) => {
     const [messages, setMessages] = useState([]);
@@ -11,7 +15,7 @@ const PopupChatWindow = ({ isOpen, toggle }) => {
         event.preventDefault();
         let message = messageRef.current.value;
         if (!message) {
-            return;
+            return toast.error("Please enter a message");
         } else {
             setMessages([...messages, message ]);
             messageRef.current.value = '';

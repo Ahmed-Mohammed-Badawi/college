@@ -1,17 +1,20 @@
-import {useEffect, useState} from "react";
+// FRAMEWORK
+import React, {useEffect, useState} from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/router";
+// COMPONENTS
 import Proposal from "@/components/proposal";
 import ProposalForm from "@/components/proposalForm";
+// HELPERS
 import getCssData from "@/helpers/readCssFile";
-import React from "react";
 import {logoutHandler} from "@/helpers/logoutHandler";
-import {toast} from "react-toastify";
 import axios from "axios";
+// NOTIFICATIONS
+import {toast} from "react-toastify";
 
-//NODE
+//NODE MODULES TO GET THE CSS FILE
 const path = require("path");
 
 export default function Home({fileContent, user}) {
@@ -35,7 +38,6 @@ export default function Home({fileContent, user}) {
         }
 
         axios.get(`/api/posts/getPost?id=${id}`).then((res) => {
-            console.log(res.data);
             setPost(res.data);
 
             // Convert the Object of comments to an array
@@ -52,7 +54,6 @@ export default function Home({fileContent, user}) {
     // HANDLERS
     const refreshTheProposals = () => {
         axios.get(`/api/posts/getPost?id=${postId}`).then((res) => {
-            console.log(res.data);
             setPost(res.data);
 
             // Convert the Object of comments to an array
@@ -91,17 +92,10 @@ export default function Home({fileContent, user}) {
                     rel='stylesheet'
                     href='https://unpkg.com/boxicons@latest/css/boxicons.min.css'
                 />
-                {/* <script defer src='/JS/post.js'></script> */}
                 <meta charSet='UTF-8'/>
                 <meta
                     name='viewport'
                     content='width=device-width, initial-scale=1.0'
-                />
-                <link
-                    rel='icon'
-                    type='image/png'
-                    sizes='32x32'
-                    href='/favicon-32x32.png'
                 />
                 <title>Frontend Mentor | Interactive comments section</title>
                 <style
@@ -137,7 +131,8 @@ export default function Home({fileContent, user}) {
                                         <Link href='/profile'>Profile</Link>
                                     </li>
                                     <li>
-                                        <Link href='#' onClick={async () => {
+                                        <Link href='#' onClick={async (event) => {
+                                            event.preventDefault();
                                             const status = await logoutHandler();
                                             if (status) {
                                                 router.push("/")
@@ -293,7 +288,7 @@ export default function Home({fileContent, user}) {
         ;
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     // Load the CSS file
     const cssFilePath = path.join(process.cwd(), "styles", "css", "post.css");
     const fileContent = await getCssData(cssFilePath);

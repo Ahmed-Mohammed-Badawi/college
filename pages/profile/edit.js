@@ -1,13 +1,16 @@
+// FRAMEWORK
 import React, { useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
+// HELPERS
 import getCssData from "@/helpers/readCssFile";
 import axios from "axios";
-import Spinner from "@/components/spinner/Spinner";
 import {toast} from "react-toastify";
 import {logoutHandler} from "@/helpers/logoutHandler";
+// COMPONENTS
+import Spinner from "@/components/spinner/Spinner";
 
 //NODE
 const path = require("path");
@@ -44,8 +47,6 @@ function Profile({ fileContent, user }) {
         axios
             .get("/api/user/get")
             .then((res) => {
-                console.log(res.data);
-
                 setFullName(res.data.name);
                 setUserName(res.data.username);
                 setBio(res.data.bio);
@@ -70,7 +71,7 @@ function Profile({ fileContent, user }) {
                 bio,
                 country,
             })
-            .then((res) => {
+            .then((_) => {
                 setLoading(false);
                 toast.success("Profile updated successfully");
                 router.push("/profile");
@@ -96,8 +97,6 @@ function Profile({ fileContent, user }) {
                     integrity='sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N'
                     crossOrigin='anonymous'
                 />
-
-                {/* <link rel='stylesheet' href='/css/profile.css' /> */}
                 <style
                     dangerouslySetInnerHTML={{ __html: fileContent }}
                 ></style>
@@ -129,7 +128,8 @@ function Profile({ fileContent, user }) {
                                 <div className='dropdown-options'>
                                     <Link href='/profile'>Dashboard</Link>
                                     <Link href='/profile/edit'>Setting</Link>
-                                    <Link href='#' onClick={async () => {
+                                    <Link href='#' onClick={async (event) => {
+                                        event.preventDefault();
                                         const status = await logoutHandler();
                                         if (status) {
                                             router.push("/")

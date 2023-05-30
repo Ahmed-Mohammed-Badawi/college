@@ -1,8 +1,9 @@
-// pages/api/getUserData.js
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, child, get } from "firebase/database";
-import { getAuth } from "firebase/auth";
+// HELPER FUNCTION TO CHECK THE TYPE OF THE REQUEST
 import nc from "next-connect";
+// IMPORT THE FIREBASE SDK
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, get } from "firebase/database";
+import { getAuth } from "firebase/auth";
 
 // Initialize Firebase
 const firebaseConfig = {

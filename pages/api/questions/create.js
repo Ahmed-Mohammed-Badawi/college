@@ -1,3 +1,4 @@
+// FIREBASE SDK
 import { initializeApp, getApps } from "firebase/app";
 import { getDatabase, ref, set, get } from "firebase/database";
 import {
@@ -7,7 +8,9 @@ import {
     getDownloadURL,
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
+// PACKAGE TO HANDLE FORM DATA
 import formidable from "formidable";
+// NODEJS FILE SYSTEM
 import fs from "fs";
 
 // Initialize Firebase app
@@ -32,11 +35,6 @@ if (!getApps().length) {
 const database = getDatabase();
 const storage = getStorage();
 
-export const config = {
-    api: {
-        bodyParser: false, // Disable the default body parser
-    },
-};
 
 export default async function handler(req, res) {
     // VERIFY TOKEN
@@ -92,7 +90,6 @@ export default async function handler(req, res) {
                             imageBuffer
                         );
                         imageUrl = await getDownloadURL(snapshot.ref);
-                        console.log("url", imageUrl);
                     }
 
                     await uploadImage();

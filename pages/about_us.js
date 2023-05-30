@@ -1,13 +1,16 @@
+// FRAMEWORK
+import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
+// HELPERS
 import getCssData from "@/helpers/readCssFile";
-import React from "react";
 import {logoutHandler} from "@/helpers/logoutHandler";
+// NOTIFICATION
 import {toast} from "react-toastify";
 
-//NODE
+//NODE MODULES TO READ FILES
 const path = require("path");
 
 export default function AboutUs({fileContent, user}) {
@@ -23,8 +26,6 @@ export default function AboutUs({fileContent, user}) {
                     rel='stylesheet'
                     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
                 />
-                {/* <link rel='stylesheet' type='text/css' href="/css/aboutus.css" /> */}
-
                 <link
                     href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
                     rel='stylesheet'
@@ -39,7 +40,7 @@ export default function AboutUs({fileContent, user}) {
                 <link
                     rel='preconnect'
                     href='https://fonts.gstatic.com'
-                    crossorigin
+                    crossOrigin
                 />
                 <style
                     dangerouslySetInnerHTML={{ __html: fileContent }}
@@ -71,7 +72,8 @@ export default function AboutUs({fileContent, user}) {
                                             <Link href='/profile'>Profile</Link>
                                         </li>
                                         <li>
-                                            <Link href='#' onClick={async () => {
+                                            <Link href='#' onClick={async (event) => {
+                                                event.preventDefault();
                                                 const status = await logoutHandler();
                                                 if (status) {
                                                     router.push("/")
@@ -249,7 +251,7 @@ export default function AboutUs({fileContent, user}) {
     );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     // Load the CSS file
     const cssFilePath = path.join(
         process.cwd(),

@@ -1,6 +1,8 @@
-import {getAuth, onAuthStateChanged} from "firebase/auth";
-import {initializeApp} from "firebase/app";
+// HELPER FUNCTION TO CHECK THE TYPE OF THE REQUEST
 import nc from "next-connect";
+// IMPORT THE FIREBASE SDK
+import {getAuth} from "firebase/auth";
+import {initializeApp} from "firebase/app";
 
 
 // Initialize Firebase

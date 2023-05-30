@@ -1,4 +1,6 @@
+// FRAMEWORK
 import Link from "next/link";
+// STYLES
 import styles from "./projectComponent.module.css";
 
 export default function ProjectComponent({id, title, description, budget, duration}) {

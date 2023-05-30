@@ -1,15 +1,20 @@
+// FRAMEWORK
 import {useEffect, useState} from "react";
-import styles from "../styles/css/Registration.module.css";
 import Script from "next/script";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+// STYLES
+import styles from "../styles/css/Registration.module.css";
+// HELPERS
 import getCssData from "@/helpers/readCssFile";
 import axios from "axios";
+// NOTIFICATION
 import { toast } from "react-toastify";
+// COMPONENTS
 import Spinner from "@/components/spinner/Spinner";
-import { useRouter } from "next/router";
 
-//NODE
+//NODE MODULE TO READ THE FILE
 const path = require("path");
 
 export default function RegistrationPage({ fileContent, user }) {
@@ -51,14 +56,14 @@ export default function RegistrationPage({ fileContent, user }) {
             return;
         }
 
-        if (/^[a-zA-Z0-9- ]*$/.test(userName) == false) {
+        if (/^[a-zA-Z0-9- ]*$/.test(userName) === false) {
             toast.error("Username must be alphanumeric!");
             return;
         }
 
         // EMAIL VALIDATION with regex
-        const emailregex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
-        if (emailregex.test(email) == false) {
+        const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+        if (emailRegex.test(email) === false) {
             toast.error("Email is not valid!");
             return;
         }
@@ -72,9 +77,8 @@ export default function RegistrationPage({ fileContent, user }) {
                 password,
                 userName,
             })
-            .then((response) => {
+            .then((_) => {
                 setLoading(false);
-                console.log(response);
                 // save the email and password in local storage
                 localStorage.setItem("emailForSignIn", email);
                 localStorage.setItem("passwordForSignIn", password);
@@ -92,7 +96,6 @@ export default function RegistrationPage({ fileContent, user }) {
             })
             .catch((error) => {
                 setLoading(false);
-                console.log(error);
                 toast.error(
                     error.response?.data?.error ||
                         error.message ||
@@ -171,7 +174,7 @@ export default function RegistrationPage({ fileContent, user }) {
                             />
                         </div>
                         <div>
-                            <i class='fa-solid fa-circle-user'></i>
+                            <i className='fa-solid fa-circle-user'></i>
                             <input
                                 type='tel'
                                 placeholder='Enter Your Username'
@@ -202,7 +205,7 @@ export default function RegistrationPage({ fileContent, user }) {
     );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     // Load the CSS file
     const cssFilePath = path.join(
         process.cwd(),

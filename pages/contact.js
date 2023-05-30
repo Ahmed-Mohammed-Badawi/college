@@ -1,12 +1,15 @@
+// FRAMEWORK
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Script from "next/script";
+// HELPERS
 import getCssData from "@/helpers/readCssFile";
 import {logoutHandler} from "@/helpers/logoutHandler";
+// NOTIFICATIONS
 import {toast} from "react-toastify";
 
-//NODE
+//NODE MODULE TO READ THE STYLE FILE
 const path = require("path");
 
 export default function ContactForm({fileContent, user}) {
@@ -112,7 +115,8 @@ export default function ContactForm({fileContent, user}) {
                                         <Link href='/profile'>Profile</Link>
                                     </li>
                                     <li>
-                                        <Link href='#' onClick={async () => {
+                                        <Link href='#' onClick={async (event) => {
+                                            event.preventDefault();
                                             const status = await logoutHandler();
                                             if (status) {
                                                 router.push("/")
@@ -303,7 +307,7 @@ export default function ContactForm({fileContent, user}) {
     );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     // Load the CSS file
     const cssFilePath = path.join(
         process.cwd(),

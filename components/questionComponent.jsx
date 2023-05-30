@@ -1,4 +1,6 @@
+// FRAMEWORK
 import Link from "next/link";
+// STYLES
 import styles from "./questionComponent.module.css";
 
 export default function ProjectComponent({id, title, description}) {

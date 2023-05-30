@@ -1,8 +1,11 @@
+// FRAMEWORK
 import {useState} from "react";
 import {useRouter} from "next/router";
+// STYLE
 import styles from "./Form.module.css";
+// COMPONENTS
 import Spinner from "@/components/spinner/Spinner";
-import axios from "axios";
+// NOTIFICATIONS
 import {toast} from "react-toastify";
 
 const Form = () => {
@@ -32,12 +35,10 @@ const Form = () => {
             body: data,
         })
             .then((response) => response.json())
-            .then((data) => {
+            .then((_) => {
                 setLoading(false);
                 // Handle the response data
                 toast.success("Question created successfully");
-                console.log(data);
-
                 // CLEAR FORM
                 setPostData({
                     projectTitle: "",

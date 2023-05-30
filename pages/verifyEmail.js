@@ -1,15 +1,20 @@
+// FRAMEWORK
 import {useEffect, useState} from "react";
-import styles from "../styles/css/Registration.module.css";
 import Script from "next/script";
 import Head from "next/head";
 import Link from "next/link";
+import {useRouter} from "next/router";
+// STYLES
+import styles from "../styles/css/Registration.module.css";
+// HELPERS
 import getCssData from "@/helpers/readCssFile";
 import axios from "axios";
+// NOTIFICATION
 import {toast} from "react-toastify";
+// COMPONENTS
 import Spinner from "@/components/spinner/Spinner";
-import {useRouter} from "next/router";
 
-//NODE
+//NODE MODULE TO READ THE FILE
 const path = require("path");
 
 export default function RegistrationPage({fileContent, user}) {
@@ -70,7 +75,6 @@ export default function RegistrationPage({fileContent, user}) {
             })
             .catch((error) => {
                 setLoading(false);
-                console.log(error);
                 toast.error(
                     error.response?.data?.error ||
                     error.message ||
@@ -99,14 +103,12 @@ export default function RegistrationPage({fileContent, user}) {
                 email,
                 password,
             })
-            .then((response) => {
+            .then((_) => {
                 setResendLoading(false);
-                console.log(response);
                 toast.success("Verification email sent successfully!");
             })
             .catch((error) => {
                 setResendLoading(false);
-                console.log(error);
                 toast.error(
                     error.response?.data?.error ||
                     error.message ||
@@ -188,7 +190,7 @@ export default function RegistrationPage({fileContent, user}) {
     );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     // Load the CSS file
     const cssFilePath = path.join(
         process.cwd(),

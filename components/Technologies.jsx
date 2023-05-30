@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+// FRAMEWORK
+import React from "react";
+// SELECT PACKAGE
 import Select from "react-select";
 // import "./technologies.css";
 
@@ -78,12 +80,10 @@ const App = ({ changed, value }) => {
 
     function searchArray(array1, array2) {
         // Filter the array of objects by checking if their value property is in the first array
-        const matchingObjects = array2.filter((obj) =>
+        return  array2.filter((obj) =>
             array1.includes(obj.value)
         );
-
-        return matchingObjects;
-    };
+    }
 
     const selectedValues = searchArray(value, options)
 

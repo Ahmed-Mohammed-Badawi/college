@@ -1,4 +1,6 @@
+// FRAMEWORK
 import { useState } from "react";
+// STYLES
 import styles from "./QuestionsFilter.module.css";
 
 const ProjectFilter = ({ onFilter }) => {

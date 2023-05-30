@@ -1,4 +1,6 @@
+// HELPER FUNCTION TO CHECK THE TYPE OF THE REQUEST
 import nc from "next-connect";
+// FIREBASE SDK
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get, set } from "firebase/database";
 import { getAuth } from "firebase/auth";
@@ -25,8 +27,6 @@ handler.post(async (req, res) => {
     try {
         const questionId = req.query.questionId; // Assuming the post ID is passed in the URL as a query parameter
         const { comment } = req.body; // Assuming the comment data is sent in the request body
-        console.log("comment", comment);
-        console.log("questionId", questionId);
 
         if (!questionId) {
             return res.status(400).json({ error: "Missing Question ID" });
@@ -44,21 +44,6 @@ handler.post(async (req, res) => {
         const newCommentId = String(Date.now());
         // const commentsRef = ref(db, `Posts/${postId}/Comments`);
         const newCommentRef = ref(db, `Questions/Questions_/${questionId}/Comments/${newCommentId}`);
-
-        // Get all comments from the database and check if the same user has already commented on the post
-        // const commentsSnapshot = await get(commentsRef);
-        // const comments = commentsSnapshot.val();
-        //
-        // if (comments) {
-        //     const commentIds = Object.keys(comments);
-        //     const userCommentId = commentIds.find((commentId) => {
-        //         return comments[commentId].id === userId;
-        //     });
-        //
-        //     if (userCommentId) {
-        //         return res.status(400).json({ error: "User already commented" });
-        //     }
-        // }
 
         // New comment data
         const newCommentData = {

@@ -1,14 +1,18 @@
+// FRAMEWORK
 import Head from "next/head";
 import React, {useEffect, useState} from "react";
 import Link from "next/link";
+// COMPONENTS
 import ProjectFilter from "@/components/ProjectFilter";
 import ProjectComponent from "@/components/projectComponent";
+// HELPERS
 import getCssData from "@/helpers/readCssFile";
 import {logoutHandler} from "@/helpers/logoutHandler";
-import {toast} from "react-toastify";
 import axios from "axios";
+// NOTIFICATION
+import {toast} from "react-toastify";
 
-//NODE
+//NODE MODULES TO GET THE CSS FILE
 const path = require("path");
 
 function Jobs({fileContent, user}) {
@@ -20,8 +24,6 @@ function Jobs({fileContent, user}) {
 
     useEffect(() => {
         axios.get("/api/posts").then((res) => {
-            console.log(res.data);
-
             // Create a new array with the posts from the object
             const posts = Object.values(res.data);
             // Set the posts
@@ -77,13 +79,10 @@ function Jobs({fileContent, user}) {
                     content='width=device-width, initial-scale=1.0'
                 />
                 <title>jobs</title>
-                {/* <link rel='stylesheet' type='text/css' href='/css/job.css' /> */}
-                {/* <script src='/JS/job.js' defer></script> */}
                 <link
                     rel='stylesheet'
                     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
                 />
-                {/* <script src="https://kit.fontawesome.com/44f50e4aac.js" crossOrigin="anonymous"></script> */}
                 <link
                     href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
                     rel='stylesheet'
@@ -104,7 +103,7 @@ function Jobs({fileContent, user}) {
                         <ul>
                             <li>Wasetak FREE</li>
                             <li>
-                                <Link href='#yalla'>How it Works?</Link>
+                                <Link href='#'>How it Works?</Link>
                             </li>
                             <li>
                                 <Link href='/jobs'>Browse Jobs</Link>
@@ -119,7 +118,10 @@ function Jobs({fileContent, user}) {
                                         <Link href='/profile'>Profile</Link>
                                     </li>
                                     <li>
-                                        <Link href='#' onClick={async () => {
+                                        <Link href='#' onClick={async (event) => {
+
+                                            event.preventDefault();
+
                                             const status = await logoutHandler();
                                             if (status) {
                                                 router.push("/")
@@ -225,7 +227,7 @@ function Jobs({fileContent, user}) {
 
 export default Jobs;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     // Load the CSS file
     const cssFilePath = path.join(process.cwd(), "styles", "css", "job.css");
     const fileContent = await getCssData(cssFilePath);
