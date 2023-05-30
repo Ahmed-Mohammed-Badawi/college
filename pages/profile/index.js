@@ -7,6 +7,7 @@ import PopupChatWindow from "@/components/PopupChatWindow";
 import getCssData from "@/helpers/readCssFile";
 import {toast} from "react-toastify";
 import axios from "axios";
+import {logoutHandler} from "@/helpers/logoutHandler";
 
 //NODE
 const path = require("path");
@@ -34,7 +35,7 @@ function Profile({fileContent, user}) {
                         toast.error("You must be logged in to access this page");
                     })
             }
-        }, 3000)
+        }, 2000)
 
         return () => clearTimeout(timer);
     }, [user, router])
@@ -115,7 +116,17 @@ function Profile({fileContent, user}) {
                                 <div className='dropdown-options'>
                                     <Link href='/profile'>Dashboard</Link>
                                     <Link href='/profile/edit'>Setting</Link>
-                                    <Link href='/'>Logout</Link>
+                                    <Link href='#' onClick={async () => {
+                                        const status = await logoutHandler();
+                                        if (status) {
+                                            router.push("/")
+                                                .then(() => {
+                                                    router.reload();
+                                                })
+                                        }else {
+                                            toast.error("Something went wrong while logging out");
+                                        }
+                                    }}>Logout</Link>
                                 </div>
                             </div>
                         </div>

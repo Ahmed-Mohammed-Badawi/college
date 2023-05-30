@@ -23,7 +23,7 @@ export default function HireForm({fileContent, user}) {
                         toast.error("You must be logged in to access this page");
                     })
             }
-        }, 3000)
+        }, 2000)
 
         return () => clearTimeout(timer);
     }, [user, router])
