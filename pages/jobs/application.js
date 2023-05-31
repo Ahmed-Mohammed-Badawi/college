@@ -107,7 +107,7 @@ export default function Home({fileContent, user}) {
                 <nav>
                     <div className='nav-bar1'>
                         <ul>
-                            <li>Wasetak FREE</li>
+                            <li onClick={() => router.push('/')} style={{cursor: 'pointer'}}>Wasetak FREE</li>
                             <li>
                                 <Link href='#'>How it Works?</Link>
                             </li>

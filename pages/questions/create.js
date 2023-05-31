@@ -57,7 +57,7 @@ export default function QuestionPage({fileContent, user}) {
                 <link
                     rel='preconnect'
                     href='https://fonts.gstatic.com'
-                    crossOrigin
+                    crossOrigin="true"
                 />
 
                 <meta charSet='UTF-8'/>

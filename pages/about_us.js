@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
+import { useRouter } from "next/router";
 // HELPERS
 import getCssData from "@/helpers/readCssFile";
 import {logoutHandler} from "@/helpers/logoutHandler";
@@ -14,6 +15,10 @@ import {toast} from "react-toastify";
 const path = require("path");
 
 export default function AboutUs({fileContent, user}) {
+    // ROUTER
+    const router = useRouter();
+
+
     return (
         <>
             <Head>
@@ -40,7 +45,7 @@ export default function AboutUs({fileContent, user}) {
                 <link
                     rel='preconnect'
                     href='https://fonts.gstatic.com'
-                    crossOrigin
+                    crossOrigin='true'
                 />
                 <style
                     dangerouslySetInnerHTML={{ __html: fileContent }}
@@ -50,12 +55,12 @@ export default function AboutUs({fileContent, user}) {
                 <header className='head'>
                     <Script
                         src='https://kit.fontawesome.com/44f50e4aac.js'
-                        crossorigin='anonymous'
+                        crossorigin='true'
                     ></Script>
                     <nav className='head-nav'>
                         <div className='nav-bar1'>
                             <ul>
-                                <li>Wasetak FREE</li>
+                                <li onClick={() => router.push('/')} style={{cursor: 'pointer'}}>Wasetak FREE</li>
                                 <li>
                                     <Link href='#'>How it Works?</Link>
                                 </li>

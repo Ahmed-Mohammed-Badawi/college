@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Script from "next/script";
+import {useRouter} from "next/router";
 // HELPERS
 import getCssData from "@/helpers/readCssFile";
 import {logoutHandler} from "@/helpers/logoutHandler";
@@ -13,6 +14,8 @@ import {toast} from "react-toastify";
 const path = require("path");
 
 export default function ContactForm({fileContent, user}) {
+    // ROUTER
+    const router = useRouter();
 
     // STATES
     const [name, setName] = useState("");
@@ -93,12 +96,12 @@ export default function ContactForm({fileContent, user}) {
             <header className={"head"}>
                 <Script
                     src='https://kit.fontawesome.com/44f50e4aac.js'
-                    crossOrigin='anonymous'
+                    crossOrigin='true'
                 ></Script>
                 <nav className={"head-nav"}>
                     <div className={"nav-bar1"}>
                         <ul>
-                            <li>Wasetak FREE</li>
+                            <li onClick={() => router.push('/')} style={{cursor: 'pointer'}}>Wasetak FREE</li>
                             <li>
                                 <Link href='#'>How it Works?</Link>
                             </li>

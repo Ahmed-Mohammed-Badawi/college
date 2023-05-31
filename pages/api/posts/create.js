@@ -1,4 +1,3 @@
-// FIREBASE SDK
 import { initializeApp, getApps } from "firebase/app";
 import { getDatabase, ref, set, get } from "firebase/database";
 import {
@@ -8,9 +7,7 @@ import {
     getDownloadURL,
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
-// HELPER PACKAGE TO HANDLE THE FORM DATA
 import formidable from "formidable";
-// NODEJS MODULE TO HANDLE FILE SYSTEM
 import fs from "fs";
 
 // Initialize Firebase app
@@ -35,7 +32,16 @@ if (!getApps().length) {
 const database = getDatabase();
 const storage = getStorage();
 
+export const config = {
+    api: {
+        bodyParser: false, // Disable the default body parser
+    },
+};
+
 export default async function handler(req, res) {
+    // GET THE TOKEN FROM THE COOKIE
+    const token = req.cookies.token;
+
     // VERIFY TOKEN
     const auth = getAuth();
 
@@ -69,7 +75,8 @@ export default async function handler(req, res) {
                     return;
                 }
 
-                const { title, type, days, price, description, category } = fields;
+                const { title, type, days, price, description, category } =
+                    fields;
                 const { image } = files;
                 let imageUrl;
 
@@ -89,6 +96,7 @@ export default async function handler(req, res) {
                             imageBuffer
                         );
                         imageUrl = await getDownloadURL(snapshot.ref);
+                        console.log("url", imageUrl);
                     }
 
                     await uploadImage();
@@ -117,7 +125,7 @@ export default async function handler(req, res) {
                     status: "on",
                 };
 
-                set(newPostRef, newPostData)
+                set(newPostRef, newPostData);
                 res.status(200).json({ message: "Post created successfully" });
             });
         } catch (error) {

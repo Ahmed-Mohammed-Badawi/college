@@ -2,6 +2,7 @@
 import Head from "next/head";
 import React, {useEffect, useState} from "react";
 import Link from "next/link";
+import {useRouter} from "next/router";
 // COMPONENTS
 import ProjectFilter from "@/components/ProjectFilter";
 import ProjectComponent from "@/components/projectComponent";
@@ -16,6 +17,8 @@ import {toast} from "react-toastify";
 const path = require("path");
 
 function Jobs({fileContent, user}) {
+    // Router
+    const router = useRouter();
 
     // State
     const [posts, setPosts] = useState([]);
@@ -101,7 +104,7 @@ function Jobs({fileContent, user}) {
                 <nav className='head-nav'>
                     <div className='nav-bar1'>
                         <ul>
-                            <li>Wasetak FREE</li>
+                            <li onClick={() => router.push('/')} style={{cursor: 'pointer'}}>Wasetak FREE</li>
                             <li>
                                 <Link href='#'>How it Works?</Link>
                             </li>

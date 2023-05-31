@@ -50,7 +50,7 @@ const HomePage = ({fileContent, user}) => {
                 <link
                     rel='preconnect'
                     href='https://fonts.gstatic.com'
-                    crossOrigin
+                    crossOrigin="true"
                 />
                 <script src='/JS/script.js' defer></script>
                 <style
@@ -60,15 +60,15 @@ const HomePage = ({fileContent, user}) => {
             <header className='head'>
                 <Script
                     src='https://kit.fontawesome.com/44f50e4aac.js'
-                    crossorigin='anonymous'
+                    crossorigin='true'
                 ></Script>
 
                 <nav className='head-nav'>
                     <div className='nav-bar1'>
                         <ul>
-                            <li>Wasetak FREE</li>
+                            <li onClick={() => router.push('/')} style={{cursor: 'pointer'}}>Wasetak FREE</li>
                             <li>
-                                <Link href='#yalla'>How it Works?</Link>
+                                <Link href='#'>How it Works?</Link>
                             </li>
                             <li>
                                 <Link href='/jobs'>Browse Jobs </Link>

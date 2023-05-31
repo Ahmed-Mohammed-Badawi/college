@@ -106,7 +106,7 @@ export default function Login({ fileContent, user }) {
                 <link
                     rel='preconnect'
                     href='https://fonts.gstatic.com'
-                    crossOrigin
+                    crossOrigin='true'
                 />
                 <style
                     dangerouslySetInnerHTML={{ __html: fileContent }}
@@ -116,7 +116,7 @@ export default function Login({ fileContent, user }) {
             <div className='container'>
                 <Script
                     src='https://kit.fontawesome.com/44f50e4aac.js'
-                    crossOrigin='anonymous'
+                    crossOrigin='true'
                 ></Script>
                 <div className='box'>
                     <h1>Login</h1>

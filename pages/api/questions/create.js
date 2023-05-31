@@ -1,4 +1,3 @@
-// FIREBASE SDK
 import { initializeApp, getApps } from "firebase/app";
 import { getDatabase, ref, set, get } from "firebase/database";
 import {
@@ -8,9 +7,7 @@ import {
     getDownloadURL,
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
-// PACKAGE TO HANDLE FORM DATA
 import formidable from "formidable";
-// NODEJS FILE SYSTEM
 import fs from "fs";
 
 // Initialize Firebase app
@@ -35,6 +32,11 @@ if (!getApps().length) {
 const database = getDatabase();
 const storage = getStorage();
 
+export const config = {
+    api: {
+        bodyParser: false, // Disable the default body parser
+    },
+};
 
 export default async function handler(req, res) {
     // VERIFY TOKEN
@@ -90,6 +92,7 @@ export default async function handler(req, res) {
                             imageBuffer
                         );
                         imageUrl = await getDownloadURL(snapshot.ref);
+                        console.log("url", imageUrl);
                     }
 
                     await uploadImage();
@@ -97,15 +100,18 @@ export default async function handler(req, res) {
 
                 // Create a new post-entry in the Realtime Database
                 const newPostId = String(Date.now()); // Generate a unique ID based on the current time in milliseconds
-                const newPostRef = ref(database, `Questions/Questions_/${newPostId}`);
+                const newPostRef = ref(
+                    database,
+                    `Questions/Questions_/${newPostId}`
+                );
                 const newPostData = {
                     user_id: userId,
                     pId: newPostId,
                     header: title,
                     text: description,
                     pComments: 0,
-                    meme: imageUrl ? imageUrl : 'noImage',
-                    vine: 'noVine',
+                    meme: imageUrl ? imageUrl : "noImage",
+                    vine: "noVine",
                 };
 
                 set(newPostRef, newPostData)
@@ -119,7 +125,9 @@ export default async function handler(req, res) {
                         console.error("Error saving Question:", error);
                     });
 
-                res.status(200).json({ message: "Question created successfully" });
+                res.status(200).json({
+                    message: "Question created successfully",
+                });
             });
         } catch (error) {
             console.error("Error creating Question:", error);

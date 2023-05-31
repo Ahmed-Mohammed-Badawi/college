@@ -151,7 +151,7 @@ export default function RegistrationPage({fileContent, user}) {
             <div className={styles.container}>
                 <Script
                     src='https://kit.fontawesome.com/44f50e4aac.js'
-                    crossOrigin='anonymous'
+                    crossOrigin='true'
                 ></Script>
                 <div className={styles.box}>
                     <h1>Verify Email</h1>
