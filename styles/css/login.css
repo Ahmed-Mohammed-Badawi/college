@@ -15,7 +15,7 @@
     margin: 0;
 }
 
-.container {
+.login__container {
     background-color:rgb(14,23,36);
     height: 100vh;
     display: flex;

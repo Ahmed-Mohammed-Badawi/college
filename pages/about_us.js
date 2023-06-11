@@ -10,6 +10,7 @@ import getCssData from "@/helpers/readCssFile";
 import {logoutHandler} from "@/helpers/logoutHandler";
 // NOTIFICATION
 import {toast} from "react-toastify";
+import BuyButton from "@/components/BuyButton/BuyButton";
 
 //NODE MODULES TO READ FILES
 const path = require("path");
@@ -27,20 +28,6 @@ export default function AboutUs({fileContent, user}) {
                     name='viewport'
                     content='width=device-width, initial-scale=1'
                 />
-                <link
-                    rel='stylesheet'
-                    href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
-                />
-                <link
-                    href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
-                    rel='stylesheet'
-                />
-
-                <link
-                    rel='stylesheet'
-                    href='https://unpkg.com/boxicons@latest/css/boxicons.min.css'
-                />
-
                 <link rel='preconnect' href='https://fonts.googleapis.com' />
                 <link
                     rel='preconnect'
@@ -80,6 +67,10 @@ export default function AboutUs({fileContent, user}) {
                                             <Link href='#' onClick={async (event) => {
                                                 event.preventDefault();
                                                 const status = await logoutHandler();
+
+                                                /*REMOVE THE ITEMS*/
+                                                localStorage.removeItem('boughtPosts')
+
                                                 if (status) {
                                                     router.push("/")
                                                         .then(() => {
@@ -89,6 +80,9 @@ export default function AboutUs({fileContent, user}) {
                                                     toast.error("Something went wrong while logging out");
                                                 }
                                             }}>Logout</Link>
+                                        </li>
+                                        <li className={"li__cart__container"}>
+                                            <Link href='/jobs/cart' className={"cart__container"}><span><BuyButton /></span> Cart </Link>
                                         </li>
                                     </>
                                 ) : (
@@ -138,7 +132,7 @@ export default function AboutUs({fileContent, user}) {
                 <section className='about-section'>
                     <div className='container'>
                         <div className='row'>
-                            <div className='content-column col-lg-6 col-md-12 col-sm-12 order-2'>
+                            <div className='content-column col-lg-7 col-md-12 col-sm-12 order-2'>
                                 <div className='inner-column'>
                                     <div className='sec-title'>
                                         <span className='title'>About Us</span>
@@ -216,7 +210,7 @@ export default function AboutUs({fileContent, user}) {
                             </div>
 
                             {/* Image Column */}
-                            <div className='image-column col-lg-6 col-md-12 col-sm-12'>
+                            <div className='image-column col-lg-5 col-md-12 col-sm-12'>
                                 <div className='inner-column wow fadeInLeft'>
                                     <figure className='image-1'>
                                         <a

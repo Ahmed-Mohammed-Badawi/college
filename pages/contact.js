@@ -9,6 +9,7 @@ import getCssData from "@/helpers/readCssFile";
 import {logoutHandler} from "@/helpers/logoutHandler";
 // NOTIFICATIONS
 import {toast} from "react-toastify";
+import BuyButton from "@/components/BuyButton/BuyButton";
 
 //NODE MODULE TO READ THE STYLE FILE
 const path = require("path");
@@ -73,15 +74,15 @@ export default function ContactForm({fileContent, user}) {
                     rel='stylesheet'
                     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
                 />
-                <link
-                    href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
-                    rel='stylesheet'
-                />
+                {/*<link*/}
+                {/*    // href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'*/}
+                {/*    rel='stylesheet'*/}
+                {/*/>*/}
                 {/* <link rel='stylesheet' type='text/css' href='/css/Contact.css' /> */}
-                <link
-                    rel='stylesheet'
-                    href='https://unpkg.com/boxicons@latest/css/boxicons.min.css'
-                />
+                {/*<link*/}
+                {/*    rel='stylesheet'*/}
+                {/*    href='https://unpkg.com/boxicons@latest/css/boxicons.min.css'*/}
+                {/*/>*/}
                 <link rel='preconnect' href='https://fonts.googleapis.com' />
                 <link
                     rel='preconnect'
@@ -121,6 +122,8 @@ export default function ContactForm({fileContent, user}) {
                                         <Link href='#' onClick={async (event) => {
                                             event.preventDefault();
                                             const status = await logoutHandler();
+                                            /*REMOVE THE ITEMS*/
+                                            localStorage.removeItem('boughtPosts')
                                             if (status) {
                                                 router.push("/")
                                                     .then(() => {
@@ -130,6 +133,9 @@ export default function ContactForm({fileContent, user}) {
                                                 toast.error("Something went wrong while logging out");
                                             }
                                         }}>Logout</Link>
+                                    </li>
+                                    <li className={"li__cart__container"}>
+                                        <Link href='/jobs/cart' className={"cart__container"}><span><BuyButton /></span> Cart </Link>
                                     </li>
                                 </>
                             ) : (

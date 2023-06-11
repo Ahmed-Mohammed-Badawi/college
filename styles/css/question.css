@@ -27,8 +27,8 @@ body {
 
 nav {
     background: rgb(255, 255, 255);
-    padding: 0 10px;
-    display: flex;
+    padding: 0 0 0 10px;
+    display: flex !important;
     justify-content: space-between;
     list-style: none;
     box-shadow: 1px 1px 1px 1px rgb(198, 198, 199);
@@ -66,7 +66,53 @@ nav {
     transition: 0.5s ease;
 }
 
-.nav-bar2 {
+.li__cart__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0e172499;
+}
+
+.nav-bar2 li .cart__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: .5rem;
+    line-height: 30px;
+    color: #FFFFFF;
+}
+
+.nav-bar2 li .cart__container span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.nav-bar2 li .cart__container:hover {
+    color: #FFFFFF;
+}
+
+.nav-bar2 li .cart__container span svg path {
+    fill: #FFFFFF;
+}
+
+.nav-bar2 li .cart__container span svg circle {
+    fill: #FFFFFF;
+}
+
+.nav-bar2 ul {
+    display: flex;
+    margin-left: 0px;
+}
+
+.nav-bar2 li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
 }
 
 .nav {

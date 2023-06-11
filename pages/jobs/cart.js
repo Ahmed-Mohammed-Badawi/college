@@ -1,97 +1,85 @@
-// FRAMWORK
+// pages/CartPage.js
+import React, {useEffect, useState} from 'react';
+import styles from '@/styles/css/cart.module.scss';
 import Head from "next/head";
-import React, {useEffect, useState} from "react";
 import Link from "next/link";
-import {useRouter} from "next/router";
-// COMPONENTS
-import QuestionFilter from "@/components/QuestionsFilter";
-import Question from "@/components/questionComponent";
-import BuyButton from "@/components/BuyButton/BuyButton";
-// HELPERS
-import getCssData from "@/helpers/readCssFile";
 import {logoutHandler} from "@/helpers/logoutHandler";
-import axios from "axios";
-// NOTIFICATIONS
 import {toast} from "react-toastify";
+import path from "path";
+import getCssData from "@/helpers/readCssFile";
+import {useRouter} from "next/router";
+import BuyButton from "@/components/BuyButton/BuyButton";
 
-//NODE MODULE TO READ CSS FILE
-const path = require("path");
-
-function Jobs({fileContent, user}) {
-
-    // State
-    const [questions, setQuestions] = useState([]);
-    const [filteredQuestions, setFilteredQuestions] = useState([]);
+const CartPage = ({fileContent, user}) => {
 
     // ROUTER
     const router = useRouter();
 
+    // STATES
+    const [posts, setPosts] = useState([]);
+
     useEffect(() => {
-        axios.get("/api/questions").then((res) => {
-            // Create a new array with the posts from the object
-            const Questions = Object.values(res.data);
-            // Set the posts
-            setQuestions(Questions);
-        })
-            .catch((err) => {
-                toast.error(err.message || err.error || "Something went wrong while fetching the posts.");
-            });
-    }, []);
 
+        // CHECK IF THE POST IS ALREADY BOUGHT
+        const boughtPosts = JSON.parse(localStorage.getItem("boughtPosts")) || [];
 
-    // Search HANDLER
-    const searchHandler = (data) => {
-        // Extract the data
-        const {title} = data;
+        setPosts(boughtPosts);
 
-        // Filter the posts
-        const filteredPosts = questions.filter((question) => {
-            return (
-                question.header.toLowerCase().includes(title.toLowerCase())
-            );
-        });
+    }, [])
 
-        // Set the posts
-        setFilteredQuestions(filteredPosts);
+    const buyAll = () => {
 
-        if (filteredPosts.length === 0) {
-            toast.info("No posts found with the given criteria.");
+        // CHECK IF THERE IS ANY POST IN THE CART
+        if(posts.length === 0) {
+            toast.error("You don't have any posts in the cart");
+            return;
+        }
+
+        if(window.confirm("Are you sure you want to buy all the posts?")) {
+            localStorage.removeItem("boughtPosts");
+            setPosts([]);
+            toast.success("Posts bought successfully");
+
+            // REDIRECT TO THE HOME PAGE
+            router.push("/")
         }
     }
-
-
-    const questionsToRender = filteredQuestions.length > 0 ? filteredQuestions : questions;
 
     return (
         <>
             <Head>
-                <meta charSet='UTF-8'/>
-                <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
+                <meta charSet='utf-8'/>
                 <meta
                     name='viewport'
-                    content='width=device-width, initial-scale=1.0'
+                    content='width=device-width, initial-scale=1'
                 />
-                <title>Questions</title>
+                <title>New Company logo</title>
                 <link
                     rel='stylesheet'
                     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
                 />
+                {/* <link rel='stylesheet' type='text/css' href='/css/post.css' /> */}
                 <link
                     href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
                     rel='stylesheet'
                 />
-                <link rel='preconnect' href='https://fonts.googleapis.com'/>
                 <link
-                    rel='preconnect'
-                    href='https://fonts.gstatic.com'
-                    crossOrigin='true'
+                    rel='stylesheet'
+                    href='https://unpkg.com/boxicons@latest/css/boxicons.min.css'
                 />
+                <meta charSet='UTF-8'/>
+                <meta
+                    name='viewport'
+                    content='width=device-width, initial-scale=1.0'
+                />
+                <title>Frontend Mentor | Interactive comments section</title>
                 <style
                     dangerouslySetInnerHTML={{__html: fileContent}}
                 ></style>
             </Head>
-            <header className='head'>
-                <nav className='head-nav'>
+
+            <header>
+                <nav>
                     <div className='nav-bar1'>
                         <ul>
                             <li onClick={() => router.push('/')} style={{cursor: 'pointer'}}>Wasetak FREE</li>
@@ -99,12 +87,19 @@ function Jobs({fileContent, user}) {
                                 <Link href='#'>How it Works?</Link>
                             </li>
                             <li>
-                                <Link href='/jobs'>Browse Jobs</Link>
+                                <Link href='#'>Browse Jobs </Link>
                             </li>
                         </ul>
                     </div>
                     <div className='nav-bar2'>
-                        <ul>
+                        <ul style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            gap: "1rem",
+                            listStyle: "none",
+                            paddingRight: ".5rem",
+                        }}>
                             {user ? (
                                 <>
                                     <li>
@@ -129,8 +124,7 @@ function Jobs({fileContent, user}) {
                                         }}>Logout</Link>
                                     </li>
                                     <li className={"li__cart__container"}>
-                                        <Link href='/jobs/cart'
-                                              className={"cart__container"}><span><BuyButton/></span> Cart </Link>
+                                        <Link href='/jobs/cart' className={"cart__container"}><span><BuyButton /></span> Cart </Link>
                                     </li>
                                 </>
                             ) : (
@@ -146,8 +140,8 @@ function Jobs({fileContent, user}) {
                         </ul>
                     </div>
                 </nav>
-                <section>
-                    <div className='nav'>
+                <section className='nav'>
+                    <div>
                         <ul>
                             <li>
                                 <Link href='/freelancer/hire'>
@@ -177,57 +171,38 @@ function Jobs({fileContent, user}) {
                     </div>
                 </section>
             </header>
+            <div className={styles.cartPage}>
+                <h1 className={styles.title}>Your Cart</h1>
+                <table className={styles.table}>
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-            <section className='main-container'>
-                <div className='nav-list'>
-                    <ul>
-                        <li>
-                            <Link href='/'>Wasetak-Free&emsp;{">"}</Link>
-                        </li>
-                        <li>
-                            <Link href='/questions'>Questions&emsp;</Link>
-                        </li>
-                    </ul>
-                </div>
-                <div className={"content_conatiner"}>
-                    <div className='filter'>
-                        <QuestionFilter onFilter={(data) => searchHandler(data)}/>
-                    </div>
-                    <div className='posts'>
-                        {questionsToRender && questionsToRender.map((question) => {
-                            return (
-                                <Question
-                                    key={question.pId}
-                                    title={question.header}
-                                    description={question.text}
-                                    id={question.pId}
-                                />
-                            );
-                        })}
-                        <div className='pagination'>
-                            <Link href='#'>&laquo;</Link>
-                            <Link className='active' href='#'>
-                                1
-                            </Link>
-                            <Link href='#'>2</Link>
-                            <Link href='#'>3</Link>
-                            <Link href='#'>4</Link>
-                            <Link href='#'>5</Link>
-                            <Link href='#'>6</Link>
-                            <Link href='#'>&gt;</Link>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                    {posts.length > 0 && posts.map((post, i) => {
+                        return (
+                            <tr key={i}>
+                                <td>{post.title}</td>
+                                <td>{post.price}</td>
+                            </tr>
+                        )
+                    })}
+                    </tbody>
+                </table>
+                <button className={styles.buyButton} onClick={buyAll}>Buy</button>
+            </div>
         </>
     );
-}
+};
 
-export default Jobs;
+export default CartPage;
 
 export async function getServerSideProps() {
     // Load the CSS file
-    const cssFilePath = path.join(process.cwd(), "styles", "css", "questions.css");
+    const cssFilePath = path.join(process.cwd(), "styles", "css", "post.css");
     const fileContent = await getCssData(cssFilePath);
     return {props: {fileContent}};
 }

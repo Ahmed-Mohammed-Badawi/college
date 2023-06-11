@@ -14,6 +14,7 @@ import {logoutHandler} from "@/helpers/logoutHandler";
 import axios from "axios";
 // NOTIFICATIONS
 import {toast} from "react-toastify";
+import BuyButton from "@/components/BuyButton/BuyButton";
 
 //NODE MODULES TO READ THE CSS FILE
 const path = require("path");
@@ -137,6 +138,10 @@ export default function Home({fileContent, user}) {
                                         <Link href='#' onClick={async (event) => {
                                             event.preventDefault();
                                             const status = await logoutHandler();
+
+                                            /*REMOVE THE ITEMS*/
+                                            localStorage.removeItem('boughtPosts')
+
                                             if (status) {
                                                 router.push("/")
                                                     .then(() => {
@@ -146,6 +151,9 @@ export default function Home({fileContent, user}) {
                                                 toast.error("Something went wrong while logging out");
                                             }
                                         }}>Logout</Link>
+                                    </li>
+                                    <li className={"li__cart__container"}>
+                                        <Link href='/jobs/cart' className={"cart__container"}><span><BuyButton /></span> Cart </Link>
                                     </li>
                                 </>
                             ) : (

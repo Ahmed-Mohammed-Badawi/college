@@ -113,7 +113,7 @@ export default function Login({ fileContent, user }) {
                 ></style>
             </Head>
 
-            <div className='container'>
+            <div className='login__container'>
                 <Script
                     src='https://kit.fontawesome.com/44f50e4aac.js'
                     crossOrigin='true'
@@ -162,7 +162,6 @@ export default function Login({ fileContent, user }) {
                             Sign Up
                         </Link>
                     </form>
-
                     <div className='Home'>
                         <Link href='/' className='home'>
                             Home

@@ -12,6 +12,7 @@ import {logoutHandler} from "@/helpers/logoutHandler";
 import axios from "axios";
 // NOTIFICATION
 import {toast} from "react-toastify";
+import BuyButton from "@/components/BuyButton/BuyButton";
 
 //NODE MODULES TO GET THE CSS FILE
 const path = require("path");
@@ -64,7 +65,7 @@ function Jobs({fileContent, user}) {
         // Set the posts
         setFilteredPosts(filteredPosts);
 
-        if(filteredPosts.length === 0){
+        if (filteredPosts.length === 0) {
             toast.info("No posts found with the given criteria.");
         }
     }
@@ -126,15 +127,23 @@ function Jobs({fileContent, user}) {
                                             event.preventDefault();
 
                                             const status = await logoutHandler();
+
+                                            /*REMOVE THE ITEMS*/
+                                            localStorage.removeItem('boughtPosts')
+
                                             if (status) {
                                                 router.push("/")
                                                     .then(() => {
                                                         router.reload();
                                                     })
-                                            }else {
+                                            } else {
                                                 toast.error("Something went wrong while logging out");
                                             }
                                         }}>Logout</Link>
+                                    </li>
+                                    <li className={"li__cart__container"}>
+                                        <Link href='/jobs/cart'
+                                              className={"cart__container"}><span><BuyButton/></span> Cart </Link>
                                     </li>
                                 </>
                             ) : (
@@ -181,7 +190,7 @@ function Jobs({fileContent, user}) {
                     </div>
                 </section>
             </header>
-            <section className='container '>
+            <section className='main-container'>
                 <div className='nav-list'>
                     <ul>
                         <li>
@@ -192,35 +201,35 @@ function Jobs({fileContent, user}) {
                         </li>
                     </ul>
                 </div>
-            </section>
-            <section className='main-container'>
-                <div className='filter'>
-                    <ProjectFilter onFilter={(data) => searchHandler(data)}/>
-                </div>
-                <div className='posts'>
-                    {postsToRender && postsToRender.map((post) => {
-                        return (
-                            <ProjectComponent
-                                key={post.pId}
-                                title={post.project_name}
-                                description={post.text}
-                                budget={post.cost}
-                                duration={post.day}
-                                id={post.pId}
-                            />
-                        );
-                    })}
-                    <div className='pagination'>
-                        <Link href='#'>&laquo;</Link>
-                        <Link className='active' href='#'>
-                            1
-                        </Link>
-                        <Link href='#'>2</Link>
-                        <Link href='#'>3</Link>
-                        <Link href='#'>4</Link>
-                        <Link href='#'>5</Link>
-                        <Link href='#'>6</Link>
-                        <Link href='#'>&gt;</Link>
+                <div className={"content_conatiner"}>
+                    <div className='filter'>
+                        <ProjectFilter onFilter={(data) => searchHandler(data)}/>
+                    </div>
+                    <div className='posts'>
+                        {postsToRender && postsToRender.map((post) => {
+                            return (
+                                <ProjectComponent
+                                    key={post.pId}
+                                    title={post.project_name}
+                                    description={post.text}
+                                    budget={post.cost}
+                                    duration={post.day}
+                                    id={post.pId}
+                                />
+                            );
+                        })}
+                        <div className='pagination'>
+                            <Link href='#'>&laquo;</Link>
+                            <Link className='active' href='#'>
+                                1
+                            </Link>
+                            <Link href='#'>2</Link>
+                            <Link href='#'>3</Link>
+                            <Link href='#'>4</Link>
+                            <Link href='#'>5</Link>
+                            <Link href='#'>6</Link>
+                            <Link href='#'>&gt;</Link>
+                        </div>
                     </div>
                 </div>
             </section>

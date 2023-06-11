@@ -1,3 +1,5 @@
+// BOOTSTRAP
+import 'bootstrap/dist/css/bootstrap.min.css';
 // FRAMEWORK
 import {useState} from "react";
 import {useEffect} from "react";
@@ -10,6 +12,7 @@ import axios from "axios";
 // NOTIFICATIONS
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function App({Component, pageProps}) {
 
@@ -24,6 +27,9 @@ export default function App({Component, pageProps}) {
         })
             .catch((err) => {
                 console.log(err);
+                // Clear the posts from the local storage
+                localStorage.removeItem("boughtPosts");
+
             });
 
     }, []);
@@ -31,7 +37,7 @@ export default function App({Component, pageProps}) {
     return (
         <>
             <NextNProgress color="#007fed"/>
-            <Component {...pageProps} user={user} />;
+            <Component {...pageProps} user={user} />
             <ToastContainer position="bottom-right"/>
         </>
     );

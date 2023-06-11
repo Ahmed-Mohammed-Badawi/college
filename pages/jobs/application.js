@@ -7,6 +7,7 @@ import {useRouter} from "next/router";
 // COMPONENTS
 import Proposal from "@/components/proposal";
 import ProposalForm from "@/components/proposalForm";
+import BuyButton from "@/components/BuyButton/BuyButton";
 // HELPERS
 import getCssData from "@/helpers/readCssFile";
 import {logoutHandler} from "@/helpers/logoutHandler";
@@ -25,6 +26,9 @@ export default function Home({fileContent, user}) {
     const [post, setPost] = useState({});
     const [postId, setPostId] = useState(null);
     const [comments, setComments] = useState([]);
+
+    // REFS
+    const BuyButtonRef = React.useRef(null);
 
     // EFFECT TO GET THE POST DATA
     useEffect(() => {
@@ -51,6 +55,24 @@ export default function Home({fileContent, user}) {
             });
     }, [router])
 
+    // EFFECT TO CHECK IF THE POST IS ALREADY BOUGHT OR NOT
+    useEffect(() => {
+        // GET THE ID FROM THE URL
+        const {id} = router.query;
+        // Check if the user is logged in
+        if (!user) return;
+
+        // CHECK IF THE POST IS ALREADY BOUGHT
+        const boughtPosts = JSON.parse(localStorage.getItem("boughtPosts")) || [];
+        const isBought = boughtPosts.find((post) => post.id === id);
+        if (isBought && BuyButtonRef.current) {
+            // ADD THE CLASS Active TO THE BUTTON
+            BuyButtonRef.current.classList.add("Active");
+        }
+
+    }, [router, user]);
+
+
     // HANDLERS
     const refreshTheProposals = () => {
         axios.get(`/api/posts/getPost?id=${postId}`).then((res) => {
@@ -69,6 +91,52 @@ export default function Home({fileContent, user}) {
             });
     }
 
+    // HANDLERS
+    const BuyHandler = () => {
+        // GET THE ID FROM THE URL
+        const {id} = router.query;
+        // Check if the user is logged in
+        if (!user) {
+            toast.error("You need to login first.");
+            return;
+        }
+
+        // Save the post id in the local storage in object that contains all the bought posts where every post has the id and title and price
+        const boughtPosts = JSON.parse(localStorage.getItem("boughtPosts")) || [];
+        const item = {
+            id,
+            title: post?.project_name,
+            price: post?.cost,
+        }
+
+        // Check if the post is already bought
+        const isBought = boughtPosts.find((post) => post.id === item.id);
+        if (isBought) {
+            if (confirm("Are you sure you want to remove this post from the bought posts?") === false) return;
+            // Remove the post from the bought posts
+            const newBoughtPosts = boughtPosts.filter((post) => post.id !== item.id);
+            localStorage.setItem("boughtPosts", JSON.stringify(newBoughtPosts));
+
+            // Show a message
+            toast.success("The post has been removed from the bought posts.");
+
+            // REMOVE THE CLASS Active FROM THE BUTTON
+            BuyButtonRef.current.classList.remove("Active");
+
+            return;
+        }
+
+        boughtPosts.push(item);
+        localStorage.setItem("boughtPosts", JSON.stringify(boughtPosts));
+
+        // Show a message
+        toast.success("The post has been added to the bought posts.");
+
+        // ADD THE CLASS Active TO THE BUTTON
+        if (BuyButtonRef.current) {
+            BuyButtonRef.current.classList.add("Active");
+        }
+    }
 
     return (
         <>
@@ -123,7 +191,7 @@ export default function Home({fileContent, user}) {
                             alignItems: "center",
                             gap: "1rem",
                             listStyle: "none",
-                            paddingRight: "1rem",
+                            paddingRight: ".5rem",
                         }}>
                             {user ? (
                                 <>
@@ -134,6 +202,10 @@ export default function Home({fileContent, user}) {
                                         <Link href='#' onClick={async (event) => {
                                             event.preventDefault();
                                             const status = await logoutHandler();
+
+                                            /*REMOVE THE ITEMS*/
+                                            localStorage.removeItem('boughtPosts')
+
                                             if (status) {
                                                 router.push("/")
                                                     .then(() => {
@@ -143,6 +215,9 @@ export default function Home({fileContent, user}) {
                                                 toast.error("Something went wrong while logging out");
                                             }
                                         }}>Logout</Link>
+                                    </li>
+                                    <li className={"li__cart__container"}>
+                                        <Link href='/jobs/cart' className={"cart__container"}><span><BuyButton /></span> Cart </Link>
                                     </li>
                                 </>
                             ) : (
@@ -193,9 +268,14 @@ export default function Home({fileContent, user}) {
                 <div className='title-a'>
                     <h1>{post?.project_name}</h1>
                 </div>
-                <div className='budget'>
-                    <h1>Budget:</h1>
-                    <h1>${post?.cost} USD</h1>
+                <div className={'Buy_Price'} onClick={BuyHandler}>
+                    {(user && user?.uid !== post?.id) && (<button type={"button"} className={"Buy_icon"} ref={BuyButtonRef}>
+                        <BuyButton/>
+                    </button>)}
+                    <div className={'budget'}>
+                        <h1>Budget:</h1>
+                        <h1>${post?.cost} USD</h1>
+                    </div>
                 </div>
             </div>
             <div className='nav-list'>

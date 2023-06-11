@@ -28,7 +28,6 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-right: 150px;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     height: 50px;
     position: fixed;
@@ -60,11 +59,52 @@ body {
     color: rgb(92, 216, 247);
     transition: 0.5s ease;
 }
+
+.li__cart__container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0e172499;
+}
+
+.nav-bar2 li .cart__container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: .5rem;
+    line-height: 30px;
+    color: #FFFFFF;
+}
+
+.nav-bar2 li .cart__container span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.nav-bar2 li .cart__container:hover{
+    color: #FFFFFF;
+}
+
+.nav-bar2 li .cart__container span svg path{
+    fill: #FFFFFF;
+}
+
+.nav-bar2 li .cart__container span svg circle{
+    fill: #FFFFFF;
+}
+
 .nav-bar2 ul {
+    display: flex;
     margin-left: 0px;
 }
 .nav-bar2 li {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px;
 }
 .nav-bar2 li a {
@@ -98,6 +138,9 @@ body {
 
 /* start nevbar for web  */
 .nav ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding-left: 80px;
 }
 .nav li a {

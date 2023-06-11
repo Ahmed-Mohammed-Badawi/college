@@ -12,11 +12,11 @@
 .logo a{
     font-size: 25px;
     font-weight: 400;
-    color: white;
+    color: white !important;
     padding-left: 70px;
     padding-top: 50px;
     position: absolute;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 .title {
     max-width: 51%;
