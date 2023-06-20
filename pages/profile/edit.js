@@ -1,9 +1,9 @@
 // FRAMEWORK
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 // HELPERS
 import getCssData from "@/helpers/readCssFile";
 import axios from "axios";
@@ -15,7 +15,7 @@ import Spinner from "@/components/spinner/Spinner";
 //NODE
 const path = require("path");
 
-function Profile({ fileContent, user }) {
+function Profile({fileContent, user}) {
 
     // ROUTER
     const router = useRouter();
@@ -98,7 +98,7 @@ function Profile({ fileContent, user }) {
                 {/*    crossOrigin='true'*/}
                 {/*/>*/}
                 <style
-                    dangerouslySetInnerHTML={{ __html: fileContent }}
+                    dangerouslySetInnerHTML={{__html: fileContent}}
                 ></style>
             </Head>
             <div>
@@ -140,7 +140,7 @@ function Profile({ fileContent, user }) {
                                                 .then(() => {
                                                     router.reload();
                                                 })
-                                        }else {
+                                        } else {
                                             toast.error("Something went wrong while logging out");
                                         }
                                     }}>Logout</Link>
@@ -194,7 +194,7 @@ function Profile({ fileContent, user }) {
                 </div>
                 <div
                     className='container'
-                    style={{ minHeight: `calc(100vh - 187px)` }}
+                    style={{minHeight: `calc(100vh - 187px)`}}
                 >
                     <div className='main-body'>
                         <div className='row'>
@@ -221,7 +221,7 @@ function Profile({ fileContent, user }) {
                                                 </p>
                                             </div>
                                         </div>
-                                        <hr className='my-4' />
+                                        <hr className='my-4'/>
                                         <ul className='list-group list-group-flush'>
                                             <li className='list-group-item d-flex justify-content-between align-items-center flex-wrap'>
                                                 <h6 className='mb-0'>
@@ -248,7 +248,8 @@ function Profile({ fileContent, user }) {
                                                             x2='22'
                                                             y2='12'
                                                         ></line>
-                                                        <path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'></path>
+                                                        <path
+                                                            d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'></path>
                                                     </svg>
                                                     Website
                                                 </h6>
@@ -258,21 +259,19 @@ function Profile({ fileContent, user }) {
                                             </li>
                                             <li className='list-group-item d-flex justify-content-between align-items-center flex-wrap'>
                                                 <h6 className='mb-0'>
-                                                    <svg
-                                                        xmlns='http://www.w3.org/2000/svg'
-                                                        width='24'
-                                                        height='24'
-                                                        viewBox='0 0 24 24'
-                                                        fill='none'
-                                                        stroke='currentColor'
-                                                        strokeWidth='2'
-                                                        strokeLinecap='round'
-                                                        strokeLinejoin='round'
-                                                        className='feather feather-github me-2 icon-inline'
-                                                    >
-                                                        <path d='M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22'></path>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none" stroke="red" strokeWidth="2"
+                                                         strokeLinecap="round" strokeLinejoin="round"
+                                                         className="feather feather-youtube">
+                                                        <path
+                                                            d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                                                        <polygon
+                                                            points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
                                                     </svg>
-                                                    Github
+                                                    <span style={{
+                                                        marginLeft: '10px',
+                                                        display: "inline-block"
+                                                    }}>Youtube</span>
                                                 </h6>
                                                 <span className='text-secondary'>
                                                     @Wasetak-Free
@@ -292,9 +291,13 @@ function Profile({ fileContent, user }) {
                                                         strokeLinejoin='round'
                                                         className='feather feather-twitter me-2 icon-inline text-info'
                                                     >
-                                                        <path d='M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z'></path>
+                                                        <path
+                                                            d='M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z'></path>
                                                     </svg>
-                                                    Twitter
+                                                    <span style={{
+                                                        marginLeft: '10px',
+                                                        display: "inline-block"
+                                                    }}>Twitter</span>
                                                 </h6>
                                                 <span className='text-secondary'>
                                                     @Wasetak-Free
@@ -302,39 +305,23 @@ function Profile({ fileContent, user }) {
                                             </li>
                                             <li className='list-group-item d-flex justify-content-between align-items-center flex-wrap'>
                                                 <h6 className='mb-0'>
-                                                    <svg
-                                                        xmlns='http://www.w3.org/2000/svg'
-                                                        width='24'
-                                                        height='24'
-                                                        viewBox='0 0 24 24'
-                                                        fill='none'
-                                                        stroke='currentColor'
-                                                        strokeWidth='2'
-                                                        strokeLinecap='round'
-                                                        strokeLinejoin='round'
-                                                        className='feather feather-instagram me-2 icon-inline text-danger'
-                                                    >
-                                                        <rect
-                                                            x='2'
-                                                            y='2'
-                                                            width='20'
-                                                            height='20'
-                                                            rx='5'
-                                                            ry='5'
-                                                        ></rect>
-                                                        <path d='M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z'></path>
-                                                        <line
-                                                            x1='17.5'
-                                                            y1='6.5'
-                                                            x2='17.51'
-                                                            y2='6.5'
-                                                        ></line>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none" stroke="#0077b5"
+                                                         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                                         className="feather feather-linkedin">
+                                                        <path
+                                                            d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                                        <rect x="2" y="9" width="4" height="12"></rect>
+                                                        <circle cx="4" cy="4" r="2"></circle>
                                                     </svg>
-                                                    Instagram
+                                                    <span style={{
+                                                        marginLeft: '10px',
+                                                        display: "inline-block"
+                                                    }}>Linkedin</span>
                                                 </h6>
                                                 <span className='text-secondary'>
-                                                    @Wasetak-Free
-                                                </span>
+                                                @Wasetak-Free
+                                            </span>
                                             </li>
                                             <li className='list-group-item d-flex justify-content-between align-items-center flex-wrap'>
                                                 <h6 className='mb-0'>
@@ -350,9 +337,13 @@ function Profile({ fileContent, user }) {
                                                         strokeLinejoin='round'
                                                         className='feather feather-facebook me-2 icon-inline text-primary'
                                                     >
-                                                        <path d='M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z'></path>
+                                                        <path
+                                                            d='M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z'></path>
                                                     </svg>
-                                                    Facebook
+                                                    <span style={{
+                                                        marginLeft: '10px',
+                                                        display: "inline-block"
+                                                    }}>Facebook</span>
                                                 </h6>
                                                 <span className='text-secondary'>
                                                     @Wasetak-Free
@@ -496,5 +487,5 @@ export async function getServerSideProps() {
         "profile.css"
     );
     const fileContent = await getCssData(cssFilePath);
-    return { props: { fileContent } };
+    return {props: {fileContent}};
 }

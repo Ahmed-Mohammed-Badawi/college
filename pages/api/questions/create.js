@@ -12,15 +12,14 @@ import fs from "fs";
 
 // Initialize Firebase app
 const firebaseConfig = {
-    apiKey: "AIzaSyC4BPVHHKQjrEuHu6PSl1H1NVSX22_7RzY",
-    authDomain: "freelancer-graduate-project.firebaseapp.com",
-    databaseURL:
-        "https://freelancer-graduate-project-default-rtdb.firebaseio.com",
-    projectId: "freelancer-graduate-project",
-    storageBucket: "freelancer-graduate-project.appspot.com",
-    messagingSenderId: "850585391310",
-    appId: "1:850585391310:web:568cf0b3e4ad87afd0809f",
-    measurementId: "G-GS23FX3SQ2",
+    apiKey: "AIzaSyDwfOFbL7aqTy-WuPVOKr018hodXclFnxA",
+    authDomain: "wassetkfree.firebaseapp.com",
+    databaseURL: "https://wassetkfree-default-rtdb.firebaseio.com",
+    projectId: "wassetkfree",
+    storageBucket: "wassetkfree.appspot.com",
+    messagingSenderId: "730291838695",
+    appId: "1:730291838695:web:3e1c365434be36be864c42",
+    measurementId: "G-P7M1HXBD2Z",
 };
 
 // Check if Firebase app is already initialized
@@ -100,17 +99,14 @@ export default async function handler(req, res) {
 
                 // Create a new post-entry in the Realtime Database
                 const newPostId = String(Date.now()); // Generate a unique ID based on the current time in milliseconds
-                const newPostRef = ref(
-                    database,
-                    `Questions/Questions_/${newPostId}`
-                );
+                const newPostRef = ref(database, `Questions/${newPostId}`);
                 const newPostData = {
-                    user_id: userId,
-                    pId: newPostId,
-                    header: title,
-                    text: description,
-                    pComments: 0,
-                    meme: imageUrl ? imageUrl : "noImage",
+                    user_id: String(userId),
+                    pId: String(newPostId),
+                    header: String(title),
+                    text: String(description),
+                    pComments: String(0),
+                    meme: imageUrl ? String(imageUrl) : "noImage",
                     vine: "noVine",
                 };
 

@@ -8,19 +8,19 @@ import {
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import formidable from "formidable";
+// NODE MODULES
 import fs from "fs";
 
 // Initialize Firebase app
 const firebaseConfig = {
-    apiKey: "AIzaSyC4BPVHHKQjrEuHu6PSl1H1NVSX22_7RzY",
-    authDomain: "freelancer-graduate-project.firebaseapp.com",
-    databaseURL:
-        "https://freelancer-graduate-project-default-rtdb.firebaseio.com",
-    projectId: "freelancer-graduate-project",
-    storageBucket: "freelancer-graduate-project.appspot.com",
-    messagingSenderId: "850585391310",
-    appId: "1:850585391310:web:568cf0b3e4ad87afd0809f",
-    measurementId: "G-GS23FX3SQ2",
+    apiKey: "AIzaSyDwfOFbL7aqTy-WuPVOKr018hodXclFnxA",
+    authDomain: "wassetkfree.firebaseapp.com",
+    databaseURL: "https://wassetkfree-default-rtdb.firebaseio.com",
+    projectId: "wassetkfree",
+    storageBucket: "wassetkfree.appspot.com",
+    messagingSenderId: "730291838695",
+    appId: "1:730291838695:web:3e1c365434be36be864c42",
+    measurementId: "G-P7M1HXBD2Z",
 };
 
 // Check if Firebase app is already initialized
@@ -106,27 +106,27 @@ export default async function handler(req, res) {
                 const newPostId = String(Date.now()); // Generate a unique ID based on the current time in milliseconds
                 const newPostRef = ref(database, `Posts/${newPostId}`);
                 const newPostData = {
-                    id: userId,
-                    name: userData?.name,
-                    db: userData?.photo,
-                    pId: newPostId,
-                    project_name: title,
+                    id: String(userId),
+                    name: String(userData?.name),
+                    db: String(userData?.photo),
+                    pId: String(newPostId),
+                    project_name: String(title),
                     type: "Image",
-                    text: description,
-                    pViews: 0,
-                    pComments: 0,
-                    meme: imageUrl ? imageUrl : null,
-                    vine: null,
-                    pTime: new Date().getTime(), // Use getTime() to get the timestamp in milliseconds
-                    project_type: type === "provider" ? 1 : 0,
-                    category: category,
-                    day: days,
-                    cost: price,
+                    text: String(description),
+                    pViews: String(0),
+                    pComments: String(0),
+                    meme: imageUrl ? String(imageUrl) : "noImage",
+                    vine: "noVideo",
+                    pTime: String(new Date().getTime()), // Use getTime() to get the timestamp in milliseconds
+                    project_type: type === "provider" ? String(1) : String(0),
+                    category: String(category),
+                    day: String(days),
+                    cost: String(price),
                     status: "on",
                 };
 
                 set(newPostRef, newPostData);
-                res.status(200).json({ message: "Post created successfully" });
+                res.status(201).json({ message: "Post created successfully" });
             });
         } catch (error) {
             res.status(500).json({ error: "Failed to create post." });

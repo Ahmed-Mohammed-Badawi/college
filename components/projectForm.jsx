@@ -133,19 +133,23 @@ const Form = () => {
                         });
                     }}
                 >
-                    <option value='web'>Web</option>
-                    <option value='mobile'>Mobile</option>
-                    <option value='desktop'>Desktop</option>
-                    <option value='game'>Game</option>
-                    <option value='graphic'>Graphic</option>
-                    <option value='video'>Video</option>
-                    <option value='audio'>Audio</option>
-                    <option value='writing'>Writing</option>
-                    <option value='translation'>Translation</option>
-                    <option value='marketing'>Marketing</option>
-                    <option value='business'>Business</option>
-                    <option value='legal'>Legal</option>
-                    <option value='other'>Other</option>
+                    <option value='Admin & Customer Support'>
+                        Admin & Customer Support
+                    </option>
+                    <option value='Consulting & HR'>Consulting & HR</option>
+                    <option value='Design'>Design</option>
+                    <option
+                        value='Development & IT
+'
+                    >
+                        Development & IT
+                    </option>
+                    <option value='Lifestyle'>Lifestyle</option>
+                    <option value='Marketing'>Marketing</option>
+                    <option value='Video & Audio'>Video & Audio</option>
+                    <option value='Writing & Translation'>
+                        Writing & Translation
+                    </option>
                 </select>
             </div>
             <div className={styles.formGroup}>

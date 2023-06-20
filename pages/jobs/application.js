@@ -152,10 +152,10 @@ export default function Home({fileContent, user}) {
                     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
                 />
                 {/* <link rel='stylesheet' type='text/css' href='/css/post.css' /> */}
-                <link
-                    href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
-                    rel='stylesheet'
-                />
+                {/*<link*/}
+                {/*    href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'*/}
+                {/*    rel='stylesheet'*/}
+                {/*/>*/}
                 <link
                     rel='stylesheet'
                     href='https://unpkg.com/boxicons@latest/css/boxicons.min.css'
@@ -301,11 +301,11 @@ export default function Home({fileContent, user}) {
                 <p className='description'>
                     {post?.text}
                 </p>
-                <div>
+                {post?.meme && (<div>
                     <h4 style={{
                         fontSize: ".9rem",
                     }}>ATTACHMENTS</h4>
-                    {post?.meme && (<Link href={post?.meme || ''} style={{
+                    {(post?.meme && post?.meme !== "noImage") && (<Link href={post?.meme || ''} style={{
                         color: "#333333",
                         textDecoration: "underline",
                         fontSize: ".8rem",
@@ -322,7 +322,7 @@ export default function Home({fileContent, user}) {
                         textOverflow: "ellipsis",
                         whiteSpace: "nowrap",
                     }}>{post?.meme || ''}</Link>)}
-                </div>
+                </div>)}
                 <br/>
                 <br/>
                 <div className='About-the-Client'>
@@ -355,7 +355,7 @@ export default function Home({fileContent, user}) {
                             freelancer={comment?.mane || "Freelancer name"}
                             text={comment?.comment}
                             imageUrl={comment?.dp || `https://via.placeholder.com/150`}
-                            days={comment?.days}
+                            days={comment?.day}
                             cost={comment?.cost}
                             user={user}
                             refreshTheProposals={refreshTheProposals}

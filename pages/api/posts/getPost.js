@@ -1,32 +1,32 @@
 // HELPER FUNCTION TO CHECK THE TYPE OF THE REQUEST
 import nc from "next-connect";
 // IMPORT THE FIREBASE SDK
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps } from "firebase/app";
 import { getDatabase, ref, child, get } from "firebase/database";
 
 // Initialize Firebase app
 const firebaseConfig = {
-    apiKey: "AIzaSyC4BPVHHKQjrEuHu6PSl1H1NVSX22_7RzY",
-    authDomain: "freelancer-graduate-project.firebaseapp.com",
-    databaseURL:
-        "https://freelancer-graduate-project-default-rtdb.firebaseio.com",
-    projectId: "freelancer-graduate-project",
-    storageBucket: "freelancer-graduate-project.appspot.com",
-    messagingSenderId: "850585391310",
-    appId: "1:850585391310:web:568cf0b3e4ad87afd0809f",
-    measurementId: "G-GS23FX3SQ2",
+    apiKey: "AIzaSyDwfOFbL7aqTy-WuPVOKr018hodXclFnxA",
+    authDomain: "wassetkfree.firebaseapp.com",
+    databaseURL: "https://wassetkfree-default-rtdb.firebaseio.com",
+    projectId: "wassetkfree",
+    storageBucket: "wassetkfree.appspot.com",
+    messagingSenderId: "730291838695",
+    appId: "1:730291838695:web:3e1c365434be36be864c42",
+    measurementId: "G-P7M1HXBD2Z",
 };
-
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+// Check if Firebase app is already initialized
+if (!getApps().length) {
+    const app = initializeApp(firebaseConfig);
+}
+const db = getDatabase();
 
 const handler = nc();
 
 handler.get(async (req, res) => {
     const postId = req.query.id; // Assuming the post ID is passed in the URL as a query parameter
 
-    if(!postId) {
+    if (!postId) {
         res.status(400).json({ error: "Missing post ID" });
         return;
     }

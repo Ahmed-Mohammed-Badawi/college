@@ -45,10 +45,10 @@ export default function QuestionPage({fileContent, user}) {
                     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
                 />
                 {/* <link rel='stylesheet' type='text/css' href='/css/hire.css' /> */}
-                <link
-                    href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'
-                    rel='stylesheet'
-                />
+                {/*<link*/}
+                {/*    href='https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css'*/}
+                {/*    rel='stylesheet'*/}
+                {/*/>*/}
                 <link
                     rel='stylesheet'
                     href='https://unpkg.com/boxicons@latest/css/boxicons.min.css'
